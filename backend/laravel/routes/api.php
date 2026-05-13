@@ -117,7 +117,7 @@ Route::get('public/settings', [SettingsController::class, 'public'])->middleware
 Route::get('test', function () {
     return response()->json([
         'ok' => true,
-        'service' => 'miss-and-mister-api',
+        'service' => 'miss-ketou-reine-api',
         'timestamp' => now()->toIso8601String(),
     ]);
 })->middleware('throttle:public-read');
