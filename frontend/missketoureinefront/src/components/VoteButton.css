@@ -1,0 +1,138 @@
+.vote-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--gold-gradient);
+  background-size: 200% auto;
+  animation: goldFlow 3s ease infinite;
+  color: #000;
+  border: none;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  overflow: visible;
+  box-shadow:
+    0 6px 28px rgba(212,175,55,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    inset 0 -2px 0 rgba(0,0,0,0.08);
+  transition: box-shadow 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  transform-style: preserve-3d;
+}
+
+.vote-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+.vote-button:hover::before { transform: translateX(100%); }
+
+.vote-button:hover:not(:disabled) {
+  box-shadow:
+    0 8px 36px rgba(212,175,55,0.38),
+    0 0 50px rgba(212,175,55,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    inset 0 -2px 0 rgba(0,0,0,0.12);
+}
+
+.vote-button:active:not(:disabled) {
+  box-shadow:
+    0 2px 12px rgba(212,175,55,0.25),
+    inset 0 1px 3px rgba(0,0,0,0.2);
+  transform: translateY(1px);
+}
+
+.vote-button:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+
+.vote-button.size-sm { padding: 0.5rem 1.2rem; font-size: 0.78rem; }
+.vote-button.size-md { padding: 0.75rem 1.8rem; font-size: 0.86rem; }
+.vote-button.size-lg { padding: 0.95rem 2.4rem; font-size: 0.92rem; }
+
+.vb-glow-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 18px;
+  background: var(--gold-gradient);
+  background-size: 200% auto;
+  filter: blur(10px);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.4s;
+  animation: goldFlow 3s ease infinite;
+}
+
+.vote-button:hover:not(:disabled) .vb-glow-ring {
+  opacity: 0.5;
+  animation: goldFlow 3s ease infinite, breathe 2s ease-in-out infinite;
+}
+
+.vb-border-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 15px;
+  z-index: -1;
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    rgba(212,175,55,0.4),
+    rgba(245,197,66,0.7),
+    rgba(255,223,128,0.4),
+    transparent,
+    rgba(212,175,55,0.4)
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  padding: 1.5px;
+  animation: rotateBorder 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+
+.vote-button:hover:not(:disabled) .vb-border-glow {
+  opacity: 1;
+}
+
+.vb-crown-spinner {
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.vote-button.loading {
+  pointer-events: none;
+}
+
+.vb-shine {
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.5s;
+}
+.vote-button:hover .vb-shine { left: 160%; }
+
+.vote-button:not(:disabled):hover .vb-shine {
+  transition: left 0.35s;
+}
+
+.vb-particle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}

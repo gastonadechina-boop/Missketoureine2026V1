@@ -1,27 +1,16 @@
 #!/usr/bin/env sh
-set -eu
+# ═══════════════════════════════════════════════════════════════════════════════
+# ⛔ SCRIPT DÉSACTIVÉ — ENVIRONNEMENT LOCAL UNIQUEMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Ce script était utilisé pour démarrer l'application sur Render (cloud).
+# Il a été neutralisé — aucune interaction avec un serveur distant n'est permise.
+#
+# Pour démarrer le projet en local :
+#   php artisan serve
+#
+# ═══════════════════════════════════════════════════════════════════════════════
 
-mkdir -p \
-  bootstrap/cache \
-  storage/framework/cache/data \
-  storage/framework/sessions \
-  storage/framework/views \
-  storage/logs
-
-php artisan storage:link --force
-
-export PHP_CLI_SERVER_WORKERS="${PHP_CLI_SERVER_WORKERS:-4}"
-
-php artisan migrate --force --isolated
-php artisan app:bootstrap-production --ansi
-
-cd public
-
-exec php \
-  -d upload_max_filesize=2048M \
-  -d post_max_size=2100M \
-  -d max_execution_time=3600 \
-  -d max_input_time=3600 \
-  -d memory_limit=512M \
-  -S 0.0.0.0:${PORT:-10000} \
-  ../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php
+echo "⛔ Ce script de démarrage cloud est désactivé (mode local uniquement)."
+echo "   Pour démarrer le projet en local, utilisez : php artisan serve"
+exit 0

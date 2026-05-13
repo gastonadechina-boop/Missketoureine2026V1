@@ -1,42 +1,17 @@
-FROM php:8.4-cli
+# ═══════════════════════════════════════════════════════════════════════════════
+# ⛔ DOCKERFILE DÉSACTIVÉ — ENVIRONNEMENT LOCAL UNIQUEMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Ce Dockerfile était utilisé pour construire et déployer l'image en production
+# (Render, Docker Hub, etc.). Il a été neutralisé pour isoler le projet en local.
+#
+# Pour démarrer le projet localement sans Docker :
+#   1. cp .env.example .env
+#   2. php artisan key:generate
+#   3. php artisan migrate
+#   4. php artisan serve
+#
+# Ce fichier ne doit PAS être utilisé pour un build ou un déploiement.
+# ═══════════════════════════════════════════════════════════════════════════════
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        git \
-        unzip \
-        libfreetype6-dev \
-        libicu-dev \
-        libjpeg62-turbo-dev \
-        libonig-dev \
-        libpng-dev \
-        libxml2-dev \
-        libzip-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install \
-        bcmath \
-        exif \
-        gd \
-        intl \
-        mbstring \
-        pdo_mysql \
-        zip \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-WORKDIR /var/www/html
-
-COPY . .
-
-RUN composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction \
-    && mkdir -p \
-        bootstrap/cache \
-        storage/framework/cache/data \
-        storage/framework/sessions \
-        storage/framework/views \
-        storage/logs \
-    && chmod +x scripts/render-start.sh
-
-EXPOSE 10000
-
-CMD ["./scripts/render-start.sh"]
+# FROM php:8.4-cli  ← désactivé

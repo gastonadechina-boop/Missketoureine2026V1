@@ -1,0 +1,162 @@
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+}
+
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 85px;
+  position: relative;
+  z-index: 1;
+}
+
+.maintenance-preview-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.03));
+  border-bottom: 1px solid rgba(212,175,55,0.1);
+  color: var(--text-primary);
+  text-align: center;
+  backdrop-filter: blur(16px);
+  position: relative;
+  z-index: 10;
+}
+
+.maintenance-preview-banner p { margin: 0; font-size: 0.88rem; }
+
+.maintenance-preview-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(212,175,55,0.1);
+  border: 1px solid rgba(212,175,55,0.2);
+  color: var(--gold-light);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.maintenance-page {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(212,175,55,0.12), transparent 45%),
+    radial-gradient(ellipse at 80% 80%, rgba(212,175,55,0.08), transparent 40%),
+    #000;
+  padding: clamp(0.75rem, 2vw, 1.25rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.maintenance-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 70px, rgba(212,175,55,0.01) 70px, rgba(212,175,55,0.01) 71px),
+              repeating-linear-gradient(90deg, transparent, transparent 70px, rgba(212,175,55,0.01) 70px, rgba(212,175,55,0.01) 71px);
+  pointer-events: none;
+}
+
+.maintenance-box {
+  width: min(680px, 100%);
+  background: linear-gradient(145deg, rgba(18,18,18,0.96), rgba(6,6,6,0.94));
+  border: 1px solid rgba(212,175,55,0.16);
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 70px rgba(212,175,55,0.04);
+  text-align: center;
+  padding: clamp(1.5rem, 2.5vw, 2.2rem) clamp(1.2rem, 2.2vw, 1.8rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(20px);
+}
+
+.maintenance-box::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(212,175,55,0.15), transparent 40%, rgba(212,175,55,0.08));
+  z-index: -1;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  padding: 1px;
+}
+
+.maintenance-pill {
+  display: inline-block;
+  border-radius: 999px;
+  background: rgba(212,175,55,0.08);
+  border: 1px solid rgba(212,175,55,0.25);
+  color: var(--gold-light);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  backdrop-filter: blur(8px);
+}
+
+.maintenance-box h1 {
+  margin: 0.2rem 0 0;
+  color: #fff;
+  font-size: clamp(1.3rem, 3.3vw, 1.9rem);
+  line-height: 1.15;
+}
+
+.maintenance-box p { margin: 0; color: var(--text-secondary); line-height: 1.62; font-size: 0.92rem; max-width: 56ch; align-self: center; }
+
+.maintenance-countdown-shell { display: flex; justify-content: center; margin-top: 0.5rem; width: 100%; }
+
+.maintenance-countdown-card.hero-card-main {
+  max-width: min(100%, 480px);
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 1.4rem;
+  background: linear-gradient(155deg, rgba(18,18,18,0.94), rgba(6,6,6,0.88));
+  box-shadow: 0 30px 80px rgba(0,0,0,0.35), 0 0 0 1px rgba(212,175,55,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212,175,55,0.14);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.maintenance-countdown-card .hcm-top { justify-content: center; margin-bottom: 1rem; font-size: 0.75rem; }
+.maintenance-countdown-card .hcm-stats-row { padding: 0.8rem; margin-bottom: 1rem; }
+.maintenance-countdown-card .hcm-stat strong { font-size: 1.05rem; }
+.maintenance-countdown-card .hcm-stat span { font-size: 0.62rem; }
+.maintenance-countdown-card .hcm-divider { height: 26px; }
+.maintenance-countdown-card .hcm-progress-label { font-size: 0.72rem; }
+.maintenance-meta { margin-top: 0 !important; color: var(--text-muted) !important; font-size: 0.82rem; }
+
+@media (max-width: 640px) {
+  .maintenance-box { padding: 1.1rem 0.95rem; }
+  .maintenance-countdown-card.hero-card-main { padding: 1rem 0.9rem; }
+  .maintenance-countdown-card .hcm-progress-label { flex-wrap: wrap; justify-content: center; }
+}

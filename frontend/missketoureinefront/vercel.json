@@ -1,0 +1,5 @@
+{
+  "_NEUTRALISE": "Ce fichier vercel.json est désactivé — mode local uniquement.",
+  "_INFO": "Aucun déploiement Vercel ne doit être effectué depuis ce répertoire.",
+  "_USAGE_LOCAL": "Pour démarrer le frontend en local : npm run dev (http://localhost:5173)"
+}

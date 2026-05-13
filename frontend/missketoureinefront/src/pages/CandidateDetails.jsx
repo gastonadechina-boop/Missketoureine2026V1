@@ -1,0 +1,449 @@
+import { useMemo, useRef, useState } from 'react';
+import { Link, useParams, useOutletContext } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { candidatesAPI, votesAPI } from '../services/api';
+import { useToast } from '../components/Toast';
+import Loader from '../components/Loader';
+import { getCandidateImageSources } from '../utils/candidateImage';
+import { formatCandidatePublicNumber, getCandidatePublicIdentifier, getCandidatePublicPath } from '../utils/candidatePublic';
+import { resolveMediaUrl } from '../utils/mediaUrl';
+import { NO_AUTO_REFRESH_INTERVAL_MS, useAutoRefresh } from '../utils/liveUpdates';
+import './CandidateDetails.css';
+
+const DEFAULT_PRICE_PER_VOTE = 100;
+const MAX_VOTES_PER_ACTION = 1000;
+
+const clampVotes = (value) => {
+  const numericValue = Number(value);
+
+  if (!Number.isFinite(numericValue)) {
+    return 0;
+  }
+
+  return Math.min(MAX_VOTES_PER_ACTION, Math.max(0, Math.round(numericValue)));
+};
+
+const CandidateDetails = () => {
+  const { identifier } = useParams();
+  const { showToast } = useToast();
+  const [candidate, setCandidate] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const hasLoadedRef = useRef(false);
+
+  const [nbVotes, setNbVotes] = useState(1);
+  const [votingLoading, setVotingLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const {
+    publicSettings = null,
+    votingBlocked = false,
+    votingBlockMessage = 'Vote bloqué',
+  } = useOutletContext() || {};
+
+  const pricePerVote = Number(publicSettings?.price_per_vote) > 0
+    ? Number(publicSettings.price_per_vote)
+    : DEFAULT_PRICE_PER_VOTE;
+
+  const fetchCandidate = async () => {
+    if (!identifier) return;
+
+    const isInitialLoad = !hasLoadedRef.current;
+
+    try {
+      if (isInitialLoad) {
+        setLoading(true);
+        setPhotoFailed(false);
+        setVideoFailed(false);
+      }
+
+      const data = await candidatesAPI.getById(identifier);
+      setPhotoFailed(false);
+      setVideoFailed(false);
+      setCandidate(data);
+      setError(null);
+      hasLoadedRef.current = true;
+    } catch (err) {
+      if (isInitialLoad || err?.status === 404 || err?.status === 403) {
+        setCandidate(null);
+        setError(err.message || 'Erreur lors du chargement de la candidate');
+      }
+    } finally {
+      if (isInitialLoad) {
+        hasLoadedRef.current = true;
+        setLoading(false);
+      }
+    }
+  };
+
+  useAutoRefresh(fetchCandidate, {
+    enabled: Boolean(identifier),
+    intervalMs: NO_AUTO_REFRESH_INTERVAL_MS,
+    minGapMs: 30000,
+    refreshOnFocus: false,
+    refreshOnLiveUpdate: false,
+    refreshOnStorage: false,
+  });
+
+  const retryFetchCandidate = async () => {
+    hasLoadedRef.current = false;
+    await fetchCandidate();
+  };
+
+  const total = (nbVotes || 0) * pricePerVote;
+  const photo = getCandidateImageSources(candidate || {}, 'detail');
+  const photoBackdrop = photo.backdrop || photo.src;
+  const videoUrl = resolveMediaUrl(candidate?.video_url || candidate?.video_path);
+  const candidatePublicPath = candidate ? getCandidatePublicPath(candidate) : '/candidates';
+  const candidateShareUrl = typeof window !== 'undefined'
+    ? new URL(candidatePublicPath, window.location.origin).toString()
+    : candidatePublicPath;
+
+  const rankingLabel = useMemo(() => {
+    const currentRank = Number(candidate?.rank_in_category || 0);
+    if (!candidate || currentRank <= 0) {
+      return '#';
+    }
+
+    return `#${currentRank}`;
+  }, [candidate]);
+
+  const incrementVotes = () => {
+    setErrors(e => ({ ...e, nbVotes: '' }));
+    setNbVotes(v => clampVotes(v + 1));
+  };
+
+  const decrementVotes = () => {
+    setErrors(e => ({ ...e, nbVotes: '' }));
+    setNbVotes(v => clampVotes(v - 1));
+  };
+
+  const handleVotesInputChange = (event) => {
+    const digitsOnly = String(event.target.value || '').replace(/\D+/g, '');
+
+    setErrors(e => ({ ...e, nbVotes: '' }));
+    setNbVotes(clampVotes(digitsOnly === '' ? 0 : Number(digitsOnly)));
+  };
+
+  const handlePay = async () => {
+    if (votingBlocked) {
+      setErrors({ general: votingBlockMessage });
+      return;
+    }
+
+    if (nbVotes < 1) {
+      setErrors({ nbVotes: 'Choisissez au moins 1 vote' });
+      return;
+    }
+
+    setVotingLoading(true);
+    setErrors({});
+
+    try {
+      const candidateIdentifier = getCandidatePublicIdentifier(candidate);
+      if (!candidateIdentifier) {
+        throw new Error('Impossible d’identifier cette candidate pour le paiement sécurisé.');
+      }
+
+      const response = await votesAPI.vote(candidateIdentifier, { amount: total, quantity: nbVotes });
+      const paymentUrl = response?.payment_url
+        || response?.payment?.meta?.payment_url
+        || response?.payment?.payment_url;
+
+      if (!paymentUrl) {
+        throw new Error('Impossible d’ouvrir le paiement sécurisé pour le moment.');
+      }
+
+      window.location.href = paymentUrl;
+      return;
+    } catch (err) {
+      const paymentErrorMessage = err.message || 'Erreur lors du paiement';
+      setErrors({ general: paymentErrorMessage });
+      showToast(paymentErrorMessage, 'error');
+    } finally {
+      setVotingLoading(false);
+    }
+  };
+
+  const handleCopyCandidateLink = async () => {
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(candidateShareUrl);
+      } else {
+        const input = document.createElement('textarea');
+        input.value = candidateShareUrl;
+        input.setAttribute('readonly', '');
+        input.style.position = 'absolute';
+        input.style.left = '-9999px';
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+      }
+
+      showToast('Lien de la candidate copié avec succès.', 'success');
+    } catch (error) {
+      showToast('Impossible de copier le lien pour le moment.', 'error');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="cdet-page">
+        <div className="container cdet-container">
+          <div className="loading-container">
+            <Loader />
+            <p>Chargement de la candidate...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !candidate) {
+    return (
+      <div className="cdet-page">
+        <div className="container cdet-container">
+          <div className="error-container">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#ef4444" strokeWidth="1.5"/>
+              <path d="M15 9l-6 6M9 9l6 6" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+            <h3>Erreur de chargement</h3>
+            <p>{error || 'Candidate non trouvée'}</p>
+            <button className="btn-gold" type="button" onClick={retryFetchCandidate}>
+              Réessayer
+            </button>
+            <Link to="/candidates">
+              <button className="btn-gold">Retour aux candidates</button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="cdet-page">
+      <div className="container cdet-container">
+
+        {/* ══════════════════ PHOTO + STATS ══════════════════ */}
+        <motion.div className="cdet-photo-card" initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}>
+            <div className="cdet-photo-wrap">
+            {!photoFailed && photo.src ? (
+                <>
+                  {photoBackdrop ? (
+                    <img
+                      src={photoBackdrop}
+                      alt=""
+                      aria-hidden="true"
+                      className="cdet-photo cdet-photo-bg"
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  ) : null}
+                  <div className="cdet-photo-overlay" aria-hidden="true" />
+                  <img
+                    src={photo.src}
+                    srcSet={photo.srcSet}
+                    sizes="(max-width: 960px) 100vw, 800px"
+                    alt={`${candidate.first_name} ${candidate.last_name}`}
+                    className="cdet-photo cdet-photo-main"
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                      e.currentTarget.removeAttribute('srcset');
+                      setPhotoFailed(true);
+                    }}
+                  />
+                </>
+              ) : (
+                <div className="cdet-photo-placeholder">
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="8" r="4" stroke="rgba(212,175,55,0.3)" strokeWidth="1.5"/>
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="rgba(212,175,55,0.3)" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                </div>
+              )}
+              <div className="cdet-photo-badges">
+                <span className="cdet-badge-num">N°{formatCandidatePublicNumber(candidate.public_number)}</span>
+                <span className="cdet-badge-name">{candidate.first_name} {candidate.last_name}</span>
+              </div>
+            </div>
+            <div className="cdet-vote-stats">
+              <div className="cdet-vs-item">
+                <strong>{(candidate.votes_count || 0).toLocaleString('fr-FR')}</strong>
+                <span>Total votes</span>
+              </div>
+              <div className="cdet-vs-divider" />
+              <div className="cdet-vs-item">
+                <strong>{rankingLabel}</strong>
+                <span>Classement</span>
+              </div>
+              <div className="cdet-vs-divider" />
+              <div className="cdet-vs-item">
+                <strong>{candidate.university}</strong>
+                <span>Arrondissement</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* 2. Vidéo de présentation — temporairement masquée
+          <motion.div className="cdet-video-card" initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.1 }}>
+            <div className="cdet-video-header">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <polygon points="5 3 19 12 5 21 5 3" stroke="#D4AF37" strokeWidth="2" strokeLinejoin="round" fill="rgba(212,175,55,0.15)"/>
+              </svg>
+              <span>Vidéo de présentation</span>
+            </div>
+
+            {videoUrl && !videoFailed ? (
+              <div className="cdet-video-wrap">
+                <video
+                  className="cdet-video"
+                  controls
+                  preload="metadata"
+                  src={videoUrl}
+                  onError={() => setVideoFailed(true)}
+                >
+                  Votre navigateur ne supporte pas la lecture vidéo.
+                </video>
+              </div>
+            ) : (
+              <div className="cdet-video-placeholder">
+                <div className="cdet-video-placeholder-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                    <polygon points="5 3 19 12 5 21 5 3" stroke="rgba(212,175,55,0.25)" strokeWidth="1.5" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <p>{videoFailed ? 'Vidéo indisponible' : 'Vidéo bientôt disponible'}</p>
+                <span>
+                  {videoFailed
+                    ? 'Le média n’a pas pu être chargé. Réessayez dans un instant.'
+                    : "La candidate n'a pas encore uploadé sa vidéo"}
+                </span>
+              </div>
+            )}
+          </motion.div>
+          */}
+
+          {/* 3. Profil — temporairement masqué
+          <motion.div className="cdet-profile-card" initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2 }}>
+            <h1 className="cdet-name">{candidate.first_name} {candidate.last_name}</h1>
+            <p className="cdet-faculty">{candidate.university}</p>
+
+            {/*
+              Affichage temporairement masqué : âge, ville et biographie.
+              Les champs restent disponibles dans les formulaires d'ajout et d'édition.
+            */}
+            {/* <div className="cdet-info-grid">
+              {[
+                // candidate.age && { label:'Âge', value:`${candidate.age} ans` },
+                // candidate.city && { label:'Ville', value: candidate.city },
+                { label:'Catégorie', value: candidate.category?.name || 'Unknown' },
+                { label:'Numéro', value:`N°${formatCandidatePublicNumber(candidate.public_number)}` },
+              ].filter(Boolean).map((info, i) => (
+                <div key={i} className="cdet-info-item">
+                  <span className="cdet-info-label">{info.label}</span>
+                  <span className="cdet-info-value">{info.value}</span>
+                </div>
+              ))}
+            </div> */}
+
+            {/* <p className="cdet-bio">{candidate.bio || candidate.description || 'Aucune biographie disponible.'}</p> */}
+
+            {/* {candidate.interests && candidate.interests.length > 0 && (
+              <div className="cdet-interests">
+                {candidate.interests.map((int, i) => (
+                  <span key={i} className="cdet-interest-tag">{int}</span>
+                ))}
+              </div>
+            )} */}
+          {/* </motion.div> */}
+
+        {/* ══════════════════ COLONNE DROITE : VOTE ══════════════════ */}
+        <motion.div className="cdet-vote-panel" initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.15 }}>
+          <div className="cdet-vote-header">
+            <div className="cdet-vote-header-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="11" width="18" height="10" rx="2" stroke="#D4AF37" strokeWidth="2"/>
+                <path d="M9 11V7a3 3 0 016 0v4" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="12" cy="16" r="1.5" fill="#D4AF37"/>
+              </svg>
+            </div>
+            <div>
+              <h2>Soutenez {candidate.first_name} {candidate.last_name}</h2>
+              <p>Choisissez votre nombre de votes ( {pricePerVote} FCFA / vote )</p>
+            </div>
+          </div>
+
+          <motion.div className="cdet-vote-body"
+            initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }} transition={{ duration:0.25 }}>
+
+                <div className="cdet-cta-message">
+                  Vous êtes sur le point de voter pour <strong>{candidate.first_name} {candidate.last_name}</strong>.
+                  Sélectionnez le nombre de votes avant de passer au paiement sécurisé.
+                </div>
+
+                <div className="cdet-counter">
+                  <button className="cdet-nb-btn" onClick={decrementVotes} disabled={nbVotes <= 0 || votingBlocked}>−</button>
+                  <input
+                    className="cdet-counter-input cdet-nb-input"
+                    type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    min="0"
+                    max={MAX_VOTES_PER_ACTION}
+                    step="1"
+                    value={nbVotes}
+                    onChange={handleVotesInputChange}
+                    disabled={votingLoading || votingBlocked}
+                    aria-label="Nombre de votes"
+                  />
+                  <button className="cdet-nb-btn" onClick={incrementVotes} disabled={votingBlocked}>+</button>
+                </div>
+                {errors.nbVotes && <p className="cdet-error">{errors.nbVotes}</p>}
+
+                <motion.div className="cdet-total-preview" initial={{ opacity:0, scale:0.95 }} animate={{ opacity:1, scale:1 }}>
+                  <span>Total à payer</span>
+                  <strong>{total.toLocaleString('fr-FR')} FCFA</strong>
+                </motion.div>
+                <p className="cdet-price-hint">Montant calculé automatiquement en temps réel.</p>
+                {votingBlocked && <p className="cdet-error">{votingBlockMessage}</p>}
+                {errors.general && <p className="cdet-error">{errors.general}</p>}
+
+                <motion.button
+                  className="cdet-btn-vote"
+                  onClick={handlePay}
+                  disabled={nbVotes < 1 || votingLoading || votingBlocked}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  {votingBlocked ? 'Vote bloqué' : (votingLoading ? 'Paiement sécurisé...' : 'Payer')}
+                </motion.button>
+                <button
+                  type="button"
+                  className="cdet-btn-share"
+                  onClick={handleCopyCandidateLink}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M8 12a3 3 0 0 1 3-3h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M16 12a3 3 0 0 1-3 3H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M15.5 8.5 18 6a3 3 0 1 1 4.24 4.24L19.5 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M8.5 15.5 6 18a3 3 0 1 1-4.24-4.24L4.5 11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Copier le lien de la candidate
+                </button>
+          </motion.div>
+        </motion.div>
+
+      </div>
+    </div>
+  );
+};
+
+export default CandidateDetails;

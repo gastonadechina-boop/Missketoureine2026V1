@@ -1,13 +1,20 @@
-.env
-.env.backup
-.env.production
-node_modules
-vendor
-composer-cache
-composer-home
-storage/logs
-storage/framework/cache/*
-storage/framework/sessions/*
-storage/framework/views/*
-.phpunit.result.cache
-tests
+# ⛔ DOCKERIGNORE DÉSACTIVÉ — ENVIRONNEMENT LOCAL UNIQUEMENT
+#
+# Ce fichier accompagnait le Dockerfile de production (désactivé).
+# Docker ne doit pas être utilisé pour ce projet en mode local.
+#
+# Ce fichier est conservé uniquement à titre de référence.
+# ──────────────────────────────────────────────────────────────
+# .env
+# .env.backup
+# .env.production
+# node_modules
+# vendor
+# composer-cache
+# composer-home
+# storage/logs
+# storage/framework/cache/*
+# storage/framework/sessions/*
+# storage/framework/views/*
+# .phpunit.result.cache
+# tests
