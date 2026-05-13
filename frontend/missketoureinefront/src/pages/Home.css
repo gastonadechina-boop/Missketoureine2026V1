@@ -1212,6 +1212,13 @@
   .hcs-count { font-size: 0.6rem; }
 }
 
+/* Push hero title down on mobile so it's not hidden behind the fixed navbar */
+@media (max-width: 768px) {
+  .hero-text {
+    padding-top: 4rem;
+  }
+}
+
 /* Scroll indicator */
 .hero-scroll {
   position: absolute;
