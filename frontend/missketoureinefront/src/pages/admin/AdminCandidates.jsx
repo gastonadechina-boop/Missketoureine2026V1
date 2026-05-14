@@ -897,7 +897,7 @@ const AdminCandidates = () => {
                 <th>N°</th>
                 <th>Candidat</th>
                 <th>Catégorie</th>
-                <th>Université</th>
+                <th>Arrondissement</th>
                 <th>Vidéo</th>
                 <th>Votes</th>
                 <th>Rang</th>
@@ -919,7 +919,7 @@ const AdminCandidates = () => {
                     </div>
                   </td>
                   <td data-label="Catégorie"><span className={`ag-badge ${c.category?.name?.toLowerCase() === 'miss' ? 'adash-miss' : 'adash-miss'}`}>{c.category?.name}</span></td>
-                  <td data-label="Université" style={{ color:'var(--ag-text-3)', fontSize:'0.83rem' }}>{c.university}</td>
+                  <td data-label="Arrondissement" style={{ color:'var(--ag-text-3)', fontSize:'0.83rem' }}>{c.university}</td>
                   <td data-label="Vidéo">
                     {c.videoName
                       ? <span className="acand-video-tag">
@@ -1123,8 +1123,8 @@ const AdminCandidates = () => {
                 </div>
 
                 <div className="ag-form-group">
-                  <label className="ag-label">Université</label>
-                  <input className="ag-input" value={form.university} onChange={e => updateField('university', e.target.value)} placeholder="Ex: UAC" />
+                  <label className="ag-label">Arrondissement</label>
+                  <input className="ag-input" value={form.university} onChange={e => updateField('university', e.target.value)} placeholder="Ex: 1er Arrondissement" />
                 </div>
 
                 <div className="ag-form-group acand-form-grid">

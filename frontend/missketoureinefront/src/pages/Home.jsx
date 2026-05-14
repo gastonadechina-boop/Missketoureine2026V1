@@ -166,26 +166,38 @@ const HOME_OVERVIEW = [
 const PROGRAM_STEPS = [
   {
     step: '01',
-    title: 'Sensibilisation & Présélection',
-    desc: 'Campagnes de communication et sélection des candidates sur des critères de motivation et d’engagement.',
+    title: 'Sensibilisation et Recrutement des Facilitateurs Universitaires et des Ambassadeurs',
+    desc: 'Campagnes de sensibilisation et recrutement des facilitateurs et ambassadeurs dans les arrondissements.',
     icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-8 8 8-8 8-8-8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M12 3v18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
   },
   {
     step: '02',
-    title: 'Formation & Coaching',
-    desc: 'Ateliers sur le leadership, le développement personnel, la communication et la culture de Kétou.',
+    title: 'Appel à Candidatures des Miss et Casting',
+    desc: 'Lancement des inscriptions et sélection des candidates par casting.',
     icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" strokeWidth="1.8"/><path d="M8 12h8M12 8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
   },
   {
     step: '03',
-    title: 'Phase Culturelle',
-    desc: 'Présentation des tenues traditionnelles, expressions artistiques et défis intellectuels.',
+    title: 'Formation et Encadrement des Candidates',
+    desc: 'Ateliers de formation en leadership, communication, culture générale et encadrement personnalisé.',
     icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 22a10 10 0 100-20 10 10 0 000 20z" stroke="currentColor" strokeWidth="1.8"/></svg>,
   },
   {
     step: '04',
-    title: 'Grande Finale',
-    desc: 'Défilés élégants, présentation des projets sociaux et couronnement de Miss Kétou LA REINE.',
+    title: 'Divertissement, Rencontres et Visites Touristiques',
+    desc: 'Activités récréatives, rencontres inter-universitaires et découverte touristique de Kétou.',
+    icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  },
+  {
+    step: '05',
+    title: 'Phase Challenge et Vote en Ligne',
+    desc: 'Défis thématiques et vote du public en ligne pour soutenir les candidates.',
+    icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  },
+  {
+    step: '06',
+    title: 'Grande Finale et Couronnement',
+    desc: 'Soirée de gala, prestations artistiques et couronnement de Miss Kétou LA REINE.',
     icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
   },
 ];
@@ -752,7 +764,7 @@ const Home = () => {
             <span className="section-eyebrow">Candidates retenues</span>
             <h2>Découvrir les candidates</h2>
             <p>
-              Consultez les profils officiels, les universités représentées et les parcours
+              Consultez les profils officiels, les arrondissements représentés et les parcours
               des candidates qualifiées pour cette édition inaugurale.
             </p>
            
@@ -810,8 +822,7 @@ const Home = () => {
                 <div className="tc-info">
                   <h3>{`${c.first_name} ${c.last_name}`}</h3>
                   <div className="tc-meta">
-                    <span className="tc-cat">{c.category?.name || 'Miss'}</span>
-                    <span className="tc-univ">{c.university || 'Université'}</span>
+                    <span className="tc-univ">{c.university || 'Arrondissement'}</span>
                   </div>
                 </div>
                 <div className="tc-votes">

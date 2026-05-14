@@ -10,7 +10,7 @@ const CandidateCard = ({ candidate, votingBlocked = false }) => {
     publicPath: getCandidatePublicPath(candidate),
     name: `${candidate.first_name} ${candidate.last_name}`,
     category: candidate.category?.name || 'Unknown',
-    university: candidate.university || 'Non spécifiée',
+    university: candidate.university || 'Non spécifié',
     votes: candidate.votes_count || 0,
     number: formatCandidatePublicNumber(candidate.public_number),
   };
@@ -115,7 +115,7 @@ const CandidateCard = ({ candidate, votingBlocked = false }) => {
           <span className="cc-number-badge-glow" />
           N°{number}
         </div>
-        <div className="cc-cat-badge">{category}</div>
+        
       </div>
 
       {/* Infos */}

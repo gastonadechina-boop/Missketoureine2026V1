@@ -5,9 +5,7 @@ import CandidateCard from '../components/CandidateCard';
 import Loader from '../components/Loader';
 import './Candidates.css';
 
-const FILTERS = [
-  { key: 'miss', label: 'Miss' },
-];
+const FILTERS = [];
 
 const SORTS = [
   { key: 'votes_desc', label: 'Votes décroissants' },
@@ -42,7 +40,7 @@ const compareCandidatesByCategoryAndNumber = (leftCandidate, rightCandidate) => 
 };
 
 const Candidates = () => {
-  const [filter, setFilter] = useState('miss');
+  const [filter, setFilter] = useState('');
   const [sortBy, setSortBy] = useState('votes_desc');
   const [searchQuery, setSearchQuery] = useState('');
   const {
@@ -57,13 +55,12 @@ const Candidates = () => {
   const error = candidates.length === 0 ? (bootstrapError?.message || null) : null;
 
   const buildName = (candidate) => `${candidate.first_name || ''} ${candidate.last_name || ''}`.trim();
-  const activeFilterLabel = FILTERS.find(({ key }) => key === filter)?.label || 'Miss';
 
   const filtered = candidates
     .filter(c => {
       const name = buildName(c).toLowerCase();
       const university = (c.university || '').toLowerCase();
-      const matchCat = c.category?.name?.toLowerCase() === filter;
+      const matchCat = !filter || c.category?.name?.toLowerCase() === filter;
       const matchSearch = name.includes(searchQuery.toLowerCase()) ||
                           university.includes(searchQuery.toLowerCase());
       return matchCat && matchSearch;
@@ -113,19 +110,6 @@ const Candidates = () => {
         <div className="container">
           <motion.div className="controls-bar" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
 
-            {/* Filtres catégories */}
-            <div className="filter-tabs">
-              {FILTERS.map(f => (
-                <button
-                  key={f.key}
-                  className={`filter-tab ${filter === f.key ? 'active' : ''}`}
-                  onClick={() => setFilter(f.key)}
-                >
-                  {f.label}
-                </button>
-              ))}
-            </div>
-
             {/* Recherche + tri */}
             <div className="controls-right">
               <div className="search-wrap">
@@ -153,7 +137,7 @@ const Candidates = () => {
 
           {/* Compteur résultats */}
           <p className="results-count">
-            {filtered.length} candidate{filtered.length !== 1 ? 's' : ''} dans la catégorie {activeFilterLabel}
+            {filtered.length} candidate{filtered.length !== 1 ? 's' : ''}
           </p>
         </div>
       </section>
@@ -169,14 +153,11 @@ const Candidates = () => {
           ) : error ? (
             <div className="error-container">
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="10" stroke="#ef4444" strokeWidth="1.5"/>
-                <path d="M15 9l-6 6M9 9l6 6" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round"/>
+                <circle cx="12" cy="12" r="10" stroke="rgba(212,175,55,0.5)" strokeWidth="1.5"/>
+                <path d="M15 9l-6 6M9 9l6 6" stroke="rgba(212,175,55,0.6)" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
-              <h3>Erreur de chargement</h3>
-              <p>{error}</p>
-              <button className="btn-gold" onClick={refreshPublicBootstrap}>
-                Réessayer
-              </button>
+              <h3>Candidates non disponibles</h3>
+              <p>Les candidates seront affichées une fois qu'elles auront été ajoutées à la plateforme.</p>
             </div>
           ) : (
             <div>

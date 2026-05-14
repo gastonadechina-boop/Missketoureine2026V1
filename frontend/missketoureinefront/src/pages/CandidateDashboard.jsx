@@ -172,8 +172,7 @@ const CandidateDashboard = () => {
               <span className="cdb-eyebrow">Espace candidat</span>
               <h1>{candidate.name}</h1>
               <div className="cdb-meta">
-                <span className="cdb-cat">{candidate.category}</span>
-                <span className="cdb-univ">{candidate.university || 'Université non renseignée'}</span>
+                <span className="cdb-univ">{candidate.university || 'Arrondissement non renseigné'}</span>
                 <span className="cdb-num">N°{formatCandidatePublicNumber(candidate.public_number)}</span>
               </div>
             </div>

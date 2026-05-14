@@ -98,7 +98,7 @@ const SOCIAL_LINKS = [
   {
     label: 'WhatsApp',
     href: PROJECT_SOCIAL_LINKS.whatsapp,
-    display: 'wa.me/22955748787',
+    display: 'wa.me/22940687272',
     icon: <WhatsAppIcon width={18} height={18} />,
   },
 ];

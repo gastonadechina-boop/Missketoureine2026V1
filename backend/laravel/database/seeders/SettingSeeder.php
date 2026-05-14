@@ -14,11 +14,11 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
         $settings = [
-            ['key' => 'price_per_vote',     'value' => '500',         'group' => 'payments'],
+            ['key' => 'price_per_vote',     'value' => '50',          'group' => 'payments'],
             ['key' => 'currency',           'value' => 'XOF',         'group' => 'payments'],
             ['key' => 'max_votes_per_day',  'value' => '200',         'group' => 'fraud'],
             ['key' => 'vote_start_at',      'value' => '2026-03-01',  'group' => 'dates'],
-            ['key' => 'vote_end_at',        'value' => '2026-03-31',  'group' => 'dates'],
+            ['key' => 'vote_end_at',        'value' => '2026-07-30',  'group' => 'dates'],
             ['key' => 'voting_open',        'value' => '1',           'group' => 'features'],
             ['key' => 'gallery_public',     'value' => '1',           'group' => 'features'],
             ['key' => 'results_public',     'value' => '0',           'group' => 'features'],

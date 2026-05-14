@@ -34,7 +34,7 @@ const buildRevealProps = (index = 0, distance = 42) => {
 
 const heroStats = [
   { value: '1ère', label: 'Édition officielle', icon: '★' },
-  { value: '16-26', label: 'Âge des participants', icon: '◎' },
+  { value: '18-28', label: 'Âge des participants', icon: '◎' },
   { value: 'Nationale', label: 'Portée du concours', icon: '▲' },
 ];
 
@@ -79,10 +79,12 @@ const pillars = [
 ];
 
 const programSteps = [
-  { step: '01', event: 'Sensibilisation et présélection des candidates', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-8 8 8-8 8-8-8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
-  { step: '02', event: 'Formation et renforcement des capacités', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" strokeWidth="1.8"/></svg> },
-  { step: '03', event: 'Phase culturelle et défis intellectuels', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg> },
-  { step: '04', event: 'Grande finale et couronnement', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8"/></svg> },
+  { step: '01', event: 'Sensibilisation et Recrutement des Facilitateurs Universitaires et des Ambassadeurs', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-8 8 8-8 8-8-8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+  { step: '02', event: 'Appel à Candidatures des Miss et Casting', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" strokeWidth="1.8"/></svg> },
+  { step: '03', event: 'Formation et Encadrement des Candidates', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg> },
+  { step: '04', event: 'Divertissement, Rencontres et Visites Touristiques', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8"/></svg> },
+  { step: '05', event: 'Phase Challenge et Vote en Ligne', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+  { step: '06', event: 'Grande Finale et Couronnement', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8"/></svg> },
 ];
 
 const evaluationCards = [
@@ -107,10 +109,10 @@ const evaluationCards = [
 const impactCards = [
   {
     title: 'Pour les jeunes filles',
-    description: 'Confiance en soi, esprit d’initiative, prise de parole et capacité à représenter leur université.',
+    description: 'Confiance en soi, esprit d’initiative, prise de parole et capacité à représenter leur arrondissement.',
   },
   {
-    title: 'Pour les universités',
+    title: 'Pour les arrondissements',
     description: 'Visibilité nationale, valorisation des talents et mise en avant de la qualité de la formation.',
   },
   {
@@ -178,7 +180,7 @@ const About = () => (
               positive de l’étudiant béninois.
             </p>
             <p>
-              MISS KÉTOU – LA REINE rassemble les universités publiques et privées,
+              MISS KÉTOU – LA REINE rassemble les arrondissements,
               les entreprises, les institutions et les partenaires sociaux autour d’une vision
               commune : investir dans la jeunesse, soutenir l’éducation et accompagner les talents.
             </p>
@@ -342,7 +344,7 @@ const About = () => (
           <span className="section-eyebrow">Prêt à participer ?</span>
           <h2>Rejoignez <span className="text-gold">l’aventure</span></h2>
           <p>
-            La plateforme officielle du concours réunit étudiants, universités et partenaires
+            La plateforme officielle du concours réunit étudiants, arrondissements et partenaires
             autour de l’excellence académique, du leadership et de l’engagement social.
           </p>
           <div className="cta-actions">

@@ -124,7 +124,7 @@ const Footer = () => {
               rel="noreferrer"
               className="footer-signature-link"
             >
-              AndroCréa
+              
             </a>
           </p>
         </div>

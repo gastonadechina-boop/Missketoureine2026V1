@@ -1,6 +1,6 @@
-export const PROJECT_PHONE_DISPLAY = '+229 55748787';
-export const PROJECT_PHONE_TEL = 'tel:+22955748787';
-export const PROJECT_WHATSAPP_NUMBER = '22955748787';
+export const PROJECT_PHONE_DISPLAY = '+229 96995760';
+export const PROJECT_PHONE_TEL = 'tel:+22996995760';
+export const PROJECT_WHATSAPP_NUMBER = '22940687272';
 export const PROJECT_WHATSAPP_URL = `https://wa.me/${PROJECT_WHATSAPP_NUMBER}`;
 export const PARTNER_WHATSAPP_MESSAGE = 'Bonjour l’équipe Miss Kétou LA REINE, notre entreprise souhaite devenir partenaire.';
 export const PARTNER_WHATSAPP_URL = `${PROJECT_WHATSAPP_URL}?text=${encodeURIComponent(PARTNER_WHATSAPP_MESSAGE)}`;
