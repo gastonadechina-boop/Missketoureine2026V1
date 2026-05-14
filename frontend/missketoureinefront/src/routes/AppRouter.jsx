@@ -207,6 +207,8 @@ const AnimatedOutlet = ({ context }) => {
   );
 };
 
+const MIN_LOADER_MS = 2200;
+
 const PublicLayout = () => {
   const {
     publicSettings,
@@ -218,6 +220,12 @@ const PublicLayout = () => {
     refreshPublicBootstrap,
   } = usePublicBootstrapData();
   const settingsLoading = bootstrapLoading && !publicSettings;
+  const [minTimeDone, setMinTimeDone] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setMinTimeDone(true), MIN_LOADER_MS);
+    return () => clearTimeout(timer);
+  }, []);
 
   const votingState = useMemo(() => computeVotingState(publicSettings || {}), [publicSettings]);
   const adminPreviewEnabled = hasAdminPreviewSession();
@@ -249,15 +257,15 @@ const PublicLayout = () => {
     ],
   );
 
-  if (settingsLoading && !publicSettings) {
+  if (!publicSettings && (settingsLoading || !minTimeDone)) {
     return (
       <div className="maintenance-page">
         <div className="maintenance-box">
           <Loader
             size="small"
             color="secondary"
-            text="Chargement de la plateforme"
-            subtext="Préparation de l’expérience officielle..."
+            text="MISS KÉTOU LA REINE"
+            subtext="Préparation de l'expérience officielle..."
           />
         </div>
       </div>
