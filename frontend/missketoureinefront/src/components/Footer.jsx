@@ -116,17 +116,7 @@ const Footer = () => {
 
         <div className="footer-bottom">
           <p>&copy; {new Date().getFullYear()} Miss Kétou LA REINE. Tous droits r&eacute;serv&eacute;s.</p>
-          <p>
-            D&eacute;velopp&eacute; par{' '}
-            <a
-              href="https://androcrea.pythonanywhere.com/"
-              target="_blank"
-              rel="noreferrer"
-              className="footer-signature-link"
-            >
-              
-            </a>
-          </p>
+
         </div>
       </div>
 
