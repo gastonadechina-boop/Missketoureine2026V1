@@ -18,6 +18,32 @@
 .contact-orb.orb-1 { width: 400px; height: 400px; background: var(--primary-gold); top: -100px; right: -60px; }
 .contact-orb.orb-2 { width: 280px; height: 280px; background: var(--secondary-gold); bottom: -60px; left: -40px; }
 
+.contact-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.contact-hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: saturate(1.0) brightness(0.5) contrast(1.0);
+}
+.contact-hero-media-mobile { display: none; }
+.contact-hero-media-mobile-image { position: absolute; inset: 0; opacity: 0; }
+.contact-hero-media-mobile-image.is-primary { opacity: 1; }
+
+@media (max-width: 768px) {
+  .contact-hero-media-desktop { display: none !important; }
+  .contact-hero-media-mobile { position: absolute; inset: 0; display: block; }
+  .contact-hero-media-mobile-image { object-position: center center; }
+  .contact-hero-media-mobile-image.is-primary { animation: cf-primary 8s ease-in-out infinite; }
+  .contact-hero-media-mobile-image.is-secondary { animation: cf-secondary 8s ease-in-out infinite; }
+}
+
 .contact-hero-content {
   position: relative;
   z-index: 1;
@@ -312,4 +338,15 @@
 @media (max-width: 600px) {
   .form-row { grid-template-columns: 1fr; }
   .contact-form-card { padding: 1.5rem; }
+}
+
+@keyframes cf-primary {
+  0%, 42% { opacity: 1; }
+  50%, 92% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes cf-secondary {
+  0%, 42% { opacity: 0; }
+  50%, 92% { opacity: 1; }
+  100% { opacity: 0; }
 }

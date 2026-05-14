@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { Link, useOutletContext } from 'react-router-dom';
 import CandidateCard from '../components/CandidateCard';
 import Loader from '../components/Loader';
+import candidatesHero from '../assets/candidates_hero.svg';
+import candidatesMobil from '../assets/candidates_mobil.svg';
 import './Candidates.css';
 
 const FILTERS = [];
@@ -86,6 +88,13 @@ const Candidates = () => {
     <div className="candidates-page">
       {/* ── HERO ── */}
       <section className="candidates-hero">
+        <div className="candidates-hero-media" aria-hidden="true">
+          <img src={candidatesHero} alt="" className="candidates-hero-media-desktop" loading="eager" decoding="async" fetchPriority="high" />
+          <div className="candidates-hero-media-mobile">
+            <img src={candidatesMobil} alt="" className="candidates-hero-media-mobile-image is-primary" loading="eager" decoding="async" fetchPriority="high" />
+            <img src={candidatesMobil} alt="" className="candidates-hero-media-mobile-image is-secondary" loading="eager" decoding="async" />
+          </div>
+        </div>
         <div className="cand-hero-bg" aria-hidden="true">
           <div className="cand-orb orb-1" />
           <div className="cand-orb orb-2" />

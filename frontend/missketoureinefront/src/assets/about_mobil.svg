@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 667" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="ambg" cx="50%" cy="40%" r="80%">
+      <stop offset="0%" stop-color="#2a1744"/>
+      <stop offset="60%" stop-color="#1a1025"/>
+      <stop offset="100%" stop-color="#0d0815"/>
+    </radialGradient>
+  </defs>
+  <rect width="375" height="667" fill="url(#ambg)"/>
+  <!-- Couronne simplifiée -->
+  <g transform="translate(140,120) scale(0.6)" opacity="0.2">
+    <path d="M0,160 L16,32 L48,64 L80,0 L112,64 L144,32 L160,160 Z" fill="none" stroke="#D4AF37" stroke-width="2.5"/>
+    <path d="M0,160 L160,160" stroke="#D4AF37" stroke-width="1.5"/>
+  </g>
+  <!-- Cercles -->
+  <circle cx="190" cy="350" r="220" fill="none" stroke="#D4AF37" stroke-width="0.4" opacity="0.08"/>
+  <circle cx="190" cy="350" r="140" fill="none" stroke="#D4AF37" stroke-width="0.4" opacity="0.12"/>
+  <circle cx="190" cy="350" r="70" fill="none" stroke="#D4AF37" stroke-width="0.8" opacity="0.18"/>
+  <!-- Étoiles -->
+  <g fill="#D4AF37" opacity="0.12">
+    <polygon points="60,100 62,96 64,100 68,100 65,103 66,107 62,104 58,107 59,103 56,100" />
+    <polygon points="280,500 282,496 284,500 288,500 285,503 286,507 282,504 278,507 279,503 276,500" />
+    <polygon points="300,150 301,148 302,150 304,150 302,152 303,154 301,152 299,154 300,152 298,150" />
+  </g>
+</svg>

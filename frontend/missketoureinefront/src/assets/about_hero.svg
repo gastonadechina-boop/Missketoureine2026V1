@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="abg" cx="50%" cy="50%" r="80%">
+      <stop offset="0%" stop-color="#2a1744"/>
+      <stop offset="60%" stop-color="#1a1025"/>
+      <stop offset="100%" stop-color="#0d0815"/>
+    </radialGradient>
+    <linearGradient id="ag1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#D4AF37" stop-opacity="0.02"/>
+    </linearGradient>
+    <linearGradient id="ag2" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="800" fill="url(#abg)"/>
+  <rect width="1440" height="800" fill="url(#ag1)"/>
+  <!-- Couronne royale (décorative) -->
+  <g transform="translate(920,180)" opacity="0.25">
+    <path d="M0,200 L20,40 L60,80 L100,0 L140,80 L180,40 L200,200 Z" fill="none" stroke="#D4AF37" stroke-width="3"/>
+    <path d="M0,200 L200,200" stroke="#D4AF37" stroke-width="2"/>
+    <circle cx="100" cy="140" r="8" fill="#D4AF37" opacity="0.4"/>
+  </g>
+  <!-- Cercles concentriques -->
+  <circle cx="520" cy="400" r="300" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.08"/>
+  <circle cx="520" cy="400" r="220" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.12"/>
+  <circle cx="520" cy="400" r="140" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.18"/>
+  <circle cx="520" cy="400" r="60" fill="none" stroke="#D4AF37" stroke-width="1" opacity="0.25"/>
+  <!-- Lignes de phase -->
+  <g opacity="0.06">
+    <line x1="0" y1="200" x2="1440" y2="200" stroke="#D4AF37" stroke-width="1"/>
+    <line x1="0" y1="400" x2="1440" y2="400" stroke="#D4AF37" stroke-width="1"/>
+    <line x1="0" y1="600" x2="1440" y2="600" stroke="#D4AF37" stroke-width="1"/>
+  </g>
+  <!-- Étoiles décoratives -->
+  <g fill="#D4AF37" opacity="0.15">
+    <polygon points="120,150 123,144 126,150 132,150 127,154 129,160 123,156 117,160 119,154 114,150" />
+    <polygon points="380,620 382,616 384,620 388,620 385,623 386,627 382,624 378,627 379,623 376,620" />
+    <polygon points="1100,550 1102,546 1104,550 1108,550 1105,553 1106,557 1102,554 1098,557 1099,553 1096,550" />
+    <polygon points="720,120 722,116 724,120 728,120 725,123 726,127 722,124 718,127 719,123 716,120" />
+    <polygon points="1300,300 1302,296 1304,300 1308,300 1305,303 1306,307 1302,304 1298,307 1299,303 1296,300" />
+  </g>
+  <!-- Vagues décoratives bas -->
+  <path d="M0,700 Q180,660 360,700 Q540,740 720,700 Q900,660 1080,700 Q1260,740 1440,700 L1440,800 L0,800 Z" fill="#D4AF37" opacity="0.04"/>
+  <path d="M0,740 Q200,710 400,740 Q600,770 800,740 Q1000,710 1200,740 Q1320,755 1440,740 L1440,800 L0,800 Z" fill="#D4AF37" opacity="0.06"/>
+  <!-- Ornements de coin -->
+  <g stroke="#D4AF37" stroke-width="0.5" fill="none" opacity="0.1">
+    <path d="M30,30 L30,100 M30,30 L100,30"/>
+    <path d="M1410,30 L1410,100 M1410,30 L1340,30"/>
+    <path d="M30,770 L30,700 M30,770 L100,770"/>
+    <path d="M1410,770 L1410,700 M1410,770 L1340,770"/>
+  </g>
+</svg>

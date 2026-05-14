@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import PartnerShowcase from '../components/PartnerShowcase';
+import aboutHero from '../assets/about_hero.svg';
+import aboutMobil from '../assets/about_mobil.svg';
 import './About.css';
 
 const fadeUp = {
@@ -132,6 +134,13 @@ const impactCards = [
 const About = () => (
   <div className="about-page">
     <section className="about-hero">
+      <div className="about-hero-media" aria-hidden="true">
+        <img src={aboutHero} alt="" className="about-hero-media-desktop" loading="eager" decoding="async" fetchPriority="high" />
+        <div className="about-hero-media-mobile">
+          <img src={aboutMobil} alt="" className="about-hero-media-mobile-image is-primary" loading="eager" decoding="async" fetchPriority="high" />
+          <img src={aboutMobil} alt="" className="about-hero-media-mobile-image is-secondary" loading="eager" decoding="async" />
+        </div>
+      </div>
       <div className="about-hero-bg" aria-hidden="true">
         <div className="about-orb orb-1" />
         <div className="about-orb orb-2" />

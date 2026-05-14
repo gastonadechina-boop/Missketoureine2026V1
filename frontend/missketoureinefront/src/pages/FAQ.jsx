@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import faqHero from '../assets/faq_hero.svg';
+import faqMobil from '../assets/faq_mobil.svg';
 import './FAQ.css';
 
 const faqs = [
@@ -74,6 +76,13 @@ const FAQ = () => {
 
       {/* ── HERO ── */}
       <section className="faq-hero">
+        <div className="faq-hero-media" aria-hidden="true">
+          <img src={faqHero} alt="" className="faq-hero-media-desktop" loading="eager" decoding="async" fetchPriority="high" />
+          <div className="faq-hero-media-mobile">
+            <img src={faqMobil} alt="" className="faq-hero-media-mobile-image is-primary" loading="eager" decoding="async" fetchPriority="high" />
+            <img src={faqMobil} alt="" className="faq-hero-media-mobile-image is-secondary" loading="eager" decoding="async" />
+          </div>
+        </div>
         <div className="faq-hero-bg" aria-hidden="true">
           <div className="faq-orb orb-1" />
           <div className="faq-orb orb-2" />

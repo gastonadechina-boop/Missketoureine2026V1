@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="ctbg" cx="50%" cy="50%" r="80%">
+      <stop offset="0%" stop-color="#1e2a3a"/>
+      <stop offset="60%" stop-color="#141a2a"/>
+      <stop offset="100%" stop-color="#0a0f1a"/>
+    </radialGradient>
+  </defs>
+  <rect width="1440" height="800" fill="url(#ctbg)"/>
+  <!-- Nœuds de communication -->
+  <g opacity="0.08">
+    <circle cx="720" cy="400" r="6" fill="#D4AF37"/>
+    <line x1="320" y1="250" x2="720" y2="400" stroke="#D4AF37" stroke-width="0.6"/>
+    <line x1="1120" y1="250" x2="720" y2="400" stroke="#D4AF37" stroke-width="0.6"/>
+    <line x1="320" y1="550" x2="720" y2="400" stroke="#D4AF37" stroke-width="0.6"/>
+    <line x1="1120" y1="550" x2="720" y2="400" stroke="#D4AF37" stroke-width="0.6"/>
+    <line x1="520" y1="180" x2="720" y2="400" stroke="#D4AF37" stroke-width="0.6"/>
+    <line x1="920" y1="180" x2="720" y2="400" stroke="#D4AF37" stroke-width="0.6"/>
+    <line x1="520" y1="620" x2="720" y2="400" stroke="#D4AF37" stroke-width="0.6"/>
+    <line x1="920" y1="620" x2="720" y2="400" stroke="#D4AF37" stroke-width="0.6"/>
+    <circle cx="320" cy="250" r="4" fill="#D4AF37"/>
+    <circle cx="1120" cy="250" r="4" fill="#D4AF37"/>
+    <circle cx="320" cy="550" r="4" fill="#D4AF37"/>
+    <circle cx="1120" cy="550" r="4" fill="#D4AF37"/>
+    <circle cx="520" cy="180" r="3" fill="#D4AF37"/>
+    <circle cx="920" cy="180" r="3" fill="#D4AF37"/>
+    <circle cx="520" cy="620" r="3" fill="#D4AF37"/>
+    <circle cx="920" cy="620" r="3" fill="#D4AF37"/>
+  </g>
+  <!-- Cercles concentriques -->
+  <circle cx="720" cy="400" r="160" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.08"/>
+  <circle cx="720" cy="400" r="260" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.05"/>
+  <!-- Bulles de chat abstraites -->
+  <g opacity="0.06" transform="translate(180,130)">
+    <rect x="0" y="0" width="100" height="60" rx="8" fill="none" stroke="#D4AF37" stroke-width="1"/>
+    <path d="M20,60 L20,80 L40,60" fill="none" stroke="#D4AF37" stroke-width="1"/>
+  </g>
+  <g opacity="0.06" transform="translate(1130,450)">
+    <rect x="0" y="0" width="80" height="50" rx="8" fill="none" stroke="#D4AF37" stroke-width="1"/>
+    <path d="M60,50 L60,70 L40,50" fill="none" stroke="#D4AF37" stroke-width="1"/>
+  </g>
+  <!-- Lignes horizontales décoratives -->
+  <g opacity="0.04">
+    <line x1="0" y1="300" x2="1440" y2="300" stroke="#D4AF37" stroke-width="0.5"/>
+    <line x1="0" y1="500" x2="1440" y2="500" stroke="#D4AF37" stroke-width="0.5"/>
+  </g>
+  <!-- Ornements de coin -->
+  <g stroke="#D4AF37" stroke-width="0.5" fill="none" opacity="0.1">
+    <path d="M30,30 L30,100 M30,30 L100,30"/>
+    <path d="M1410,30 L1410,100 M1410,30 L1340,30"/>
+    <path d="M30,770 L30,700 M30,770 L100,770"/>
+    <path d="M1410,770 L1410,700 M1410,770 L1340,770"/>
+  </g>
+</svg>

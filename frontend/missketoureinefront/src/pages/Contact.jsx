@@ -10,6 +10,8 @@ import {
   PROJECT_SOCIAL_LINKS,
   PROJECT_WHATSAPP_URL,
 } from '../utils/siteContact';
+import contactHero from '../assets/contact_hero.svg';
+import contactMobil from '../assets/contact_mobil.svg';
 import './Contact.css';
 
 const fadeUp = (delay = 0) => ({
@@ -151,6 +153,13 @@ const Contact = () => {
 
       {/* ── HERO ── */}
       <section className="contact-hero">
+        <div className="contact-hero-media" aria-hidden="true">
+          <img src={contactHero} alt="" className="contact-hero-media-desktop" loading="eager" decoding="async" fetchPriority="high" />
+          <div className="contact-hero-media-mobile">
+            <img src={contactMobil} alt="" className="contact-hero-media-mobile-image is-primary" loading="eager" decoding="async" fetchPriority="high" />
+            <img src={contactMobil} alt="" className="contact-hero-media-mobile-image is-secondary" loading="eager" decoding="async" />
+          </div>
+        </div>
         <div className="contact-hero-bg" aria-hidden="true">
           <div className="contact-orb orb-1" />
           <div className="contact-orb orb-2" />

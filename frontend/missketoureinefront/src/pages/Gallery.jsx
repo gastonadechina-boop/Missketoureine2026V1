@@ -5,6 +5,8 @@ import { galleryAPI } from '../services/api';
 import Loader from '../components/Loader';
 import { resolveMediaUrl } from '../utils/mediaUrl';
 import { NO_AUTO_REFRESH_INTERVAL_MS, useAutoRefresh } from '../utils/liveUpdates';
+import galleryHero from '../assets/gallery_hero.svg';
+import galleryMobil from '../assets/gallery_mobil.svg';
 import './Gallery.css';
 
 const DEFAULT_CATEGORIES = ['Cérémonie', 'Candidates', 'Coulisses', 'Gala'];
@@ -212,6 +214,13 @@ const Gallery = () => {
   return (
     <div className="gallery-page">
       <section className="gallery-hero">
+        <div className="gallery-hero-media" aria-hidden="true">
+          <img src={galleryHero} alt="" className="gallery-hero-media-desktop" loading="eager" decoding="async" fetchPriority="high" />
+          <div className="gallery-hero-media-mobile">
+            <img src={galleryMobil} alt="" className="gallery-hero-media-mobile-image is-primary" loading="eager" decoding="async" fetchPriority="high" />
+            <img src={galleryMobil} alt="" className="gallery-hero-media-mobile-image is-secondary" loading="eager" decoding="async" />
+          </div>
+        </div>
         <div className="gallery-hero-bg" aria-hidden="true">
           <div className="gal-orb orb-1" />
           <div className="gal-orb orb-2" />

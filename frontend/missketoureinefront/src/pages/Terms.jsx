@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { PROJECT_EMAIL, PROJECT_PHONE_DISPLAY } from '../utils/siteContact';
+import legalHero from '../assets/legal_hero.svg';
+import legalMobil from '../assets/legal_mobil.svg';
 import './LegalPages.css';
 
 const sections = [
@@ -102,6 +104,13 @@ const Terms = () => {
   return (
     <div className="legal-page">
       <section className="legal-hero">
+        <div className="legal-hero-media" aria-hidden="true">
+          <img src={legalHero} alt="" className="legal-hero-media-desktop" loading="eager" decoding="async" fetchPriority="high" />
+          <div className="legal-hero-media-mobile">
+            <img src={legalMobil} alt="" className="legal-hero-media-mobile-image is-primary" loading="eager" decoding="async" fetchPriority="high" />
+            <img src={legalMobil} alt="" className="legal-hero-media-mobile-image is-secondary" loading="eager" decoding="async" />
+          </div>
+        </div>
         <div className="legal-hero-bg" aria-hidden="true">
           <div className="legal-orb orb-1" />
           <div className="legal-orb orb-2" />

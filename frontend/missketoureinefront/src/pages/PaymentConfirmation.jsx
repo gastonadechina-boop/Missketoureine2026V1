@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { paymentAPI } from '../services/api';
 import { getCandidatePublicPath } from '../utils/candidatePublic';
 import { broadcastLiveUpdate } from '../utils/liveUpdates';
+import paymentHero from '../assets/payment_hero.svg';
+import paymentMobil from '../assets/payment_mobil.svg';
 import './PaymentConfirmation.css';
 
 const SYNCABLE_STATES = new Set(['success', 'processing', 'pending', 'opening', 'initiated', 'failed']);
@@ -247,6 +249,13 @@ const PaymentConfirmation = () => {
   return (
     <div className="payment-confirmation-page">
       <section className="payment-confirmation-hero">
+        <div className="payment-hero-media" aria-hidden="true">
+          <img src={paymentHero} alt="" className="payment-hero-media-desktop" loading="eager" decoding="async" fetchPriority="high" />
+          <div className="payment-hero-media-mobile">
+            <img src={paymentMobil} alt="" className="payment-hero-media-mobile-image is-primary" loading="eager" decoding="async" fetchPriority="high" />
+            <img src={paymentMobil} alt="" className="payment-hero-media-mobile-image is-secondary" loading="eager" decoding="async" />
+          </div>
+        </div>
         <div className="payment-confirmation-bg" aria-hidden="true">
           <div className="payment-confirmation-orb orb-1" />
           <div className="payment-confirmation-orb orb-2" />

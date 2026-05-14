@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="pbg" cx="50%" cy="50%" r="80%">
+      <stop offset="0%" stop-color="#1a2e1a"/>
+      <stop offset="60%" stop-color="#101e10"/>
+      <stop offset="100%" stop-color="#080e08"/>
+    </radialGradient>
+  </defs>
+  <rect width="1440" height="800" fill="url(#pbg)"/>
+  <!-- Coche de succès -->
+  <g opacity="0.08" transform="translate(620,240) scale(1.3)">
+    <circle cx="80" cy="80" r="80" fill="none" stroke="#D4AF37" stroke-width="3"/>
+    <path d="M45,80 L70,105 L115,55" fill="none" stroke="#D4AF37" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <!-- Confettis -->
+  <g opacity="0.1">
+    <rect x="400" y="180" width="8" height="4" rx="1" fill="#D4AF37" transform="rotate(25,404,182)"/>
+    <rect x="1000" y="200" width="8" height="4" rx="1" fill="#D4AF37" transform="rotate(-30,1004,202)"/>
+    <rect x="500" y="500" width="6" height="3" rx="1" fill="#D4AF37" transform="rotate(45,503,501)"/>
+    <rect x="900" y="480" width="6" height="3" rx="1" fill="#D4AF37" transform="rotate(-45,903,481)"/>
+    <rect x="300" y="350" width="6" height="3" rx="1" fill="#D4AF37" transform="rotate(15,303,351)"/>
+    <rect x="1100" y="380" width="6" height="3" rx="1" fill="#D4AF37" transform="rotate(-20,1103,381)"/>
+  </g>
+  <!-- Cercles de célébration -->
+  <circle cx="720" cy="400" r="250" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.06"/>
+  <circle cx="720" cy="400" r="180" fill="none" stroke="#D4AF37" stroke-width="0.5" opacity="0.08"/>
+  <circle cx="720" cy="400" r="100" fill="none" stroke="#D4AF37" stroke-width="0.8" opacity="0.1"/>
+  <!-- Étoiles -->
+  <g fill="#D4AF37" opacity="0.12">
+    <polygon points="350,250 353,242 356,250 364,250 358,255 360,263 353,258 346,263 348,255 342,250" />
+    <polygon points="1050,550 1053,542 1056,550 1064,550 1058,555 1060,563 1053,558 1046,563 1048,555 1042,550" />
+    <polygon points="600,580 602,576 604,580 608,580 605,583 606,587 602,584 598,587 599,583 596,580" />
+    <polygon points="850,200 852,196 854,200 858,200 855,203 856,207 852,204 848,207 849,203 846,200" />
+  </g>
+  <!-- Ornements de coin -->
+  <g stroke="#D4AF37" stroke-width="0.5" fill="none" opacity="0.1">
+    <path d="M30,30 L30,100 M30,30 L100,30"/>
+    <path d="M1410,30 L1410,100 M1410,30 L1340,30"/>
+    <path d="M30,770 L30,700 M30,770 L100,770"/>
+    <path d="M1410,770 L1410,700 M1410,770 L1340,770"/>
+  </g>
+</svg>
