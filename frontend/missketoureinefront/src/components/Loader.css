@@ -42,7 +42,6 @@
 .loader-ring {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
   pointer-events: none;
 }
 .loader-ring::before, .loader-ring::after {
@@ -54,15 +53,17 @@
 
 .loader-ring-outer::before {
   background: conic-gradient(from 0deg, rgba(212,175,55,0) 0deg, rgba(212,175,55,0) 18deg, var(--loader-accent-strong) 18deg, rgba(212,175,55,0.06) 38deg, rgba(212,175,55,0) 70deg, rgba(212,175,55,0.92) 70deg, rgba(212,175,55,0.05) 92deg, rgba(212,175,55,0) 140deg, rgba(212,175,55,0) 360deg);
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+  padding: 5px;
+  -webkit-mask: linear-gradient(black,black) content-box, linear-gradient(black,black);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
   animation: loaderSpin 1.5s linear infinite;
   filter: drop-shadow(0 0 18px rgba(212,175,55,0.18));
 }
 
 .loader-ring-outer::after {
-  inset: 11px;
-  background: radial-gradient(circle, transparent 57%, rgba(212,175,55,0.04) 59%, transparent 68%);
+  inset: 12px;
+  background: rgba(212,175,55,0.04);
   animation: loaderPulse 2.6s ease-in-out infinite;
 }
 
@@ -70,8 +71,10 @@
 
 .loader-ring-inner::before {
   background: conic-gradient(from 180deg, rgba(212,175,55,0) 0deg, rgba(212,175,55,0.82) 24deg, rgba(212,175,55,0.03) 54deg, rgba(212,175,55,0) 90deg, rgba(212,175,55,0.88) 126deg, rgba(212,175,55,0) 180deg, rgba(212,175,55,0) 360deg);
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  padding: 3px;
+  -webkit-mask: linear-gradient(black,black) content-box, linear-gradient(black,black);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
   animation: loaderSpinReverse 2.25s linear infinite;
   opacity: 0.9;
   filter: blur(0.1px);
@@ -82,7 +85,6 @@
   inset: 17%;
   display: grid;
   place-items: center;
-  border-radius: 50%;
   background:
     radial-gradient(circle at 30% 28%, rgba(255,255,255,0.12), transparent 38%),
     radial-gradient(circle at 50% 50%, rgba(0,0,0,0.86), rgba(5,5,5,0.98));
@@ -97,7 +99,6 @@
 .loader-core-glow {
   position: absolute;
   inset: 11%;
-  border-radius: 50%;
   background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 72%);
   filter: blur(10px);
 }
@@ -108,7 +109,6 @@
   width: 68%; height: 68%;
   display: grid;
   place-items: center;
-  border-radius: 50%;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)),
     linear-gradient(145deg, rgba(212,175,55,0.12), rgba(0,0,0,0.22));
@@ -121,7 +121,6 @@
   width: 72%; height: 72%;
   object-fit: contain;
   display: block;
-  border-radius: 50%;
   filter: drop-shadow(0 0 12px rgba(0,0,0,0.45));
 }
 
