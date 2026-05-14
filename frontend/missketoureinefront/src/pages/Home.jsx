@@ -172,33 +172,57 @@ const PROGRAM_STEPS = [
   },
   {
     step: '02',
+    title: 'Lancement Officiel du Concours',
+    desc: 'Cérémonie officielle de lancement de l\'édition 2026 du concours Miss Kétou LA REINE.',
+    icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 21V3h13l-2 5 2 5H4" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>,
+  },
+  {
+    step: '03',
     title: 'Appel à Candidatures des Miss et Casting',
     desc: 'Lancement des inscriptions et sélection des candidates par casting.',
     icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" strokeWidth="1.8"/><path d="M8 12h8M12 8v8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>,
   },
   {
-    step: '03',
+    step: '04',
     title: 'Formation et Encadrement des Candidates',
     desc: 'Ateliers de formation en leadership, communication, culture générale et encadrement personnalisé.',
     icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 22a10 10 0 100-20 10 10 0 000 20z" stroke="currentColor" strokeWidth="1.8"/></svg>,
   },
   {
-    step: '04',
+    step: '05',
     title: 'Divertissement, Rencontres et Visites Touristiques',
-    desc: 'Activités récréatives, rencontres inter-universitaires et découverte touristique de Kétou.',
+    desc: 'Activités récréatives, rencontres et découverte touristique de Kétou.',
     icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
   },
   {
-    step: '05',
+    step: '06',
     title: 'Phase Challenge et Vote en Ligne',
     desc: 'Défis thématiques et vote du public en ligne pour soutenir les candidates.',
     icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
   },
   {
-    step: '06',
+    step: '07',
     title: 'Grande Finale et Couronnement',
     desc: 'Soirée de gala, prestations artistiques et couronnement de Miss Kétou LA REINE.',
     icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  },
+  {
+    step: '08',
+    title: 'Publication des moments forts de l\'événement',
+    desc: 'Diffusion des temps forts, photos et vidéos sur toutes les plateformes officielles.',
+    icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  },
+  {
+    step: '09',
+    title: 'Remerciements des Sponsors et Partenaires',
+    desc: 'Cérémonie de reconnaissance envers les sponsors et partenaires pour leur soutien.',
+    icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+  },
+  {
+    step: '10',
+    title: 'Officialisation du Mandat de la Miss et ses Dauphine',
+    desc: 'Prise de fonction officielle de la Miss et de ses dauphines pour l\'année en cours.',
+    icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2 19h20M4 19V8l4 4 4-6 4 6 4-4v11" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>,
   },
 ];
 

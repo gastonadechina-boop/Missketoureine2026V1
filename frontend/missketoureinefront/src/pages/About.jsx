@@ -80,11 +80,15 @@ const pillars = [
 
 const programSteps = [
   { step: '01', event: 'Sensibilisation et Recrutement des Facilitateurs Universitaires et des Ambassadeurs', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-8 8 8-8 8-8-8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
-  { step: '02', event: 'Appel à Candidatures des Miss et Casting', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" strokeWidth="1.8"/></svg> },
-  { step: '03', event: 'Formation et Encadrement des Candidates', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg> },
-  { step: '04', event: 'Divertissement, Rencontres et Visites Touristiques', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8"/></svg> },
-  { step: '05', event: 'Phase Challenge et Vote en Ligne', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
-  { step: '06', event: 'Grande Finale et Couronnement', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8"/></svg> },
+  { step: '02', event: 'Lancement Officiel du Concours', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 21V3h13l-2 5 2 5H4" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg> },
+  { step: '03', event: 'Appel à Candidatures des Miss et Casting', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" strokeWidth="1.8"/></svg> },
+  { step: '04', event: 'Formation et Encadrement des Candidates', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg> },
+  { step: '05', event: 'Divertissement, Rencontres et Visites Touristiques', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8"/></svg> },
+  { step: '06', event: 'Phase Challenge et Vote en Ligne', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+  { step: '07', event: 'Grande Finale et Couronnement', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8"/></svg> },
+  { step: '08', event: 'Publication des moments forts de l\'événement', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+  { step: '09', event: 'Remerciements des Sponsors et Partenaires', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+  { step: '10', event: 'Officialisation du Mandat de la Miss et ses Dauphine', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 19h20M4 19V8l4 4 4-6 4 6 4-4v11" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg> },
 ];
 
 const evaluationCards = [
