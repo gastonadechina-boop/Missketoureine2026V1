@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -15,8 +14,7 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Miss', 'description' => 'Concours Miss'],
-            ['name' => 'Mister', 'description' => 'Concours Mister'],
+            ['name' => 'Miss', 'description' => 'Concours Miss Kétou LA REINE'],
         ];
 
         foreach ($categories as $index => $category) {

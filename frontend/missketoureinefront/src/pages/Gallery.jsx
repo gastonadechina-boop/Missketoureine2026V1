@@ -268,22 +268,42 @@ const Gallery = () => {
           <section className="gallery-filters-section">
             <div className="container">
               <motion.div className="gallery-filter-bar" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-                {categories.map((category) => {
-                  const count = category === 'Tout'
-                    ? photos.length
-                    : photos.filter((photo) => photo.category === category).length;
+                <div className="gallery-filter-desktop">
+                  {categories.map((category) => {
+                    const count = category === 'Tout'
+                      ? photos.length
+                      : photos.filter((photo) => photo.category === category).length;
 
-                  return (
-                    <button
-                      key={category}
-                      className={`gallery-filter-btn ${activeCategory === category ? 'active' : ''}`}
-                      onClick={() => setActiveCategory(category)}
-                    >
-                      {category}
-                      <span className="gf-count">{count}</span>
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        key={category}
+                        className={`gallery-filter-btn ${activeCategory === category ? 'active' : ''}`}
+                        onClick={() => setActiveCategory(category)}
+                      >
+                        {category}
+                        <span className="gf-count">{count}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="gallery-filter-mobile">
+                  <select
+                    className="gallery-filter-select"
+                    value={activeCategory}
+                    onChange={(e) => setActiveCategory(e.target.value)}
+                  >
+                    {categories.map((category) => {
+                      const count = category === 'Tout'
+                        ? photos.length
+                        : photos.filter((photo) => photo.category === category).length;
+                      return (
+                        <option key={category} value={category}>
+                          {category} ({count})
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
               </motion.div>
             </div>
           </section>

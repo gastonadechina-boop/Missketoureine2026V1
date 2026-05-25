@@ -40,7 +40,7 @@ const getDefaultDirectApiBaseUrl = () => {
     const runtimeHostname = window.location?.hostname || '';
 
     if (isProductionProxyHost(runtimeHostname)) {
-      return 'https://api.missmisteruniversitybenin.com/api';
+      return 'https://api.missketoureine.com/api';
     }
   }
 
@@ -89,7 +89,7 @@ const API_TIMEOUT = (() => {
   const isLocalApi = /(localhost|127\.0\.0\.1)/i.test(API_BASE_URL);
   return isLocalApi ? 10000 : 20000;
 })();
-const MAX_API_RETRIES = 1;
+const MAX_API_RETRIES = 2;
 const RETRYABLE_STATUS_CODES = new Set([408, 429, 502, 503, 504, 509]);
 const RETRYABLE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 const SESSION_EXPIRED_MESSAGE = 'Votre session a expiré. Veuillez vous reconnecter pour continuer.';
@@ -838,7 +838,9 @@ const fetchPublicAPI = async (endpoint, options = {}) => {
         return cachedResponse;
       }
 
-      console.error('API Error:', error);
+      if (!error?.isTransportError && !error?.isNetworkError) {
+        console.error('API Error:', error);
+      }
       throw error;
     }
   })();

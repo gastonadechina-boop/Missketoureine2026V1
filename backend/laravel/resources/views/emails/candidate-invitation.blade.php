@@ -8,7 +8,7 @@
 <body style="margin:0;padding:0;background:#070707;color:#f5f5f5;font-family:Arial,sans-serif;">
     <div style="max-width:640px;margin:0 auto;padding:32px 20px;">
         <div style="background:linear-gradient(180deg,#121212,#090909);border:1px solid rgba(212,175,55,.25);border-radius:20px;padding:32px;">
-            <p style="margin:0 0 12px;color:#d4af37;font-size:12px;letter-spacing:2px;text-transform:uppercase;">Miss & Mister University Benin</p>
+            <p style="margin:0 0 12px;color:#d4af37;font-size:12px;letter-spacing:2px;text-transform:uppercase;">Miss Kétou LA REINE</p>
             <h1 style="margin:0 0 16px;font-size:28px;line-height:1.2;color:#ffffff;">Votre acces candidat est pret</h1>
             <p style="margin:0 0 18px;font-size:15px;line-height:1.7;color:#d7d7d7;">
                 Bonjour {{ $user->name }}, votre profil candidat a ete cree par l'administration.

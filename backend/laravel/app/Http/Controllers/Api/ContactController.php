@@ -28,7 +28,7 @@ class ContactController extends Controller
                 $message
                     ->to($recipient)
                     ->replyTo($data['email'], $data['name'])
-                    ->subject('[Contact MMUB] ' . $data['subject']);
+                    ->subject('[Contact Miss Kétou] ' . $data['subject']);
             });
         } catch (\Throwable $exception) {
             Log::warning('Contact form delivery failed', [
@@ -50,7 +50,7 @@ class ContactController extends Controller
     private function buildPlainTextBody(array $data): string
     {
         return implode(PHP_EOL, [
-            'Nouveau message depuis le formulaire de contact MMUB',
+            'Nouveau message depuis le formulaire de contact Miss Kétou LA REINE',
             '',
             'Nom : ' . $data['name'],
             'Email : ' . $data['email'],

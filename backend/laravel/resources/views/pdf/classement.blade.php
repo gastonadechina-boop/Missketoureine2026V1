@@ -10,7 +10,7 @@
         $safeSignatory = $signatory ?? 'Delphin DOSSA EZOUN-AGNAN';
         $safeLogoDataUri = $logoDataUri ?? null;
     @endphp
-    <title>Classement {{ $safeCategoryName }} - Miss & Mister University Benin</title>
+    <title>Classement {{ $safeCategoryName }} - Miss Kétou LA REINE</title>
     <style>
         @page {
             margin: 115px 38px 120px 38px;
@@ -227,11 +227,11 @@
         <div class="header-inner">
             <div class="header-logo">
                 @if($safeLogoDataUri)
-                    <img src="{{ $safeLogoDataUri }}" alt="Logo Miss & Mister University Benin">
+                    <img src="{{ $safeLogoDataUri }}" alt="Logo Miss Kétou LA REINE">
                 @endif
             </div>
             <div class="header-copy">
-                <p class="header-title">MISS &amp; MISTER UNIVERSITY BENIN</p>
+                <p class="header-title">MISS KÉTOU – LA REINE</p>
                 <p class="header-edition">{{ $safeEditionLabel }}</p>
                 <p class="header-subtitle">{{ $safeSubtitle }}</p>
             </div>
@@ -239,7 +239,7 @@
     </header>
 
     <footer>
-        <div class="footer-copy">Concours Miss &amp; Mister University Bénin {{ $safeEditionLabel }}</div>
+        <div class="footer-copy">Miss Kétou LA REINE {{ $safeEditionLabel }}</div>
         <div class="footer-copy page-counter"></div>
     </footer>
 

@@ -259,9 +259,9 @@ class CandidateOnboardingTest extends TestCase
         Mail::fake();
 
         $category = Category::create([
-            'name' => 'Mister',
-            'slug' => 'mister',
-            'description' => 'Mister',
+            'name' => 'Miss',
+            'slug' => 'miss',
+            'description' => 'Miss Kétou LA REINE',
             'status' => 'active',
             'position' => 2,
         ]);

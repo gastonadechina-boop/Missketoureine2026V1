@@ -21,8 +21,7 @@ class BootstrapProduction extends Command
 
         Category::query()->upsert(
             collect([
-                ['name' => 'Miss', 'description' => 'Concours Miss'],
-                ['name' => 'Mister', 'description' => 'Concours Mister'],
+                ['name' => 'Miss', 'description' => 'Concours Miss Kétou LA REINE'],
             ])->map(function (array $category, int $index) use ($now): array {
                 return [
                     'name' => $category['name'],

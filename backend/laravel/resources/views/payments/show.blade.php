@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Paiement sécurisé | Miss & Mister</title>
+    <title>Paiement sécurisé | Miss Kétou LA REINE</title>
     <script src="{{ $fedapayScriptUrl }}"></script>
     <style>
         :root {
@@ -395,8 +395,8 @@
     <main class="shell">
         <div class="hero">
             <div class="brand">
-                <div class="brand-mark" aria-hidden="true"><span>MM</span></div>
-                <span>Miss &amp; Mister University Bénin 2026</span>
+                <div class="brand-mark" aria-hidden="true"><span>MK</span></div>
+                <span>Miss Kétou LA REINE 2026</span>
             </div>
             <div class="status-pill">
                 <span>Paiement chiffré et vérifié côté serveur</span>
@@ -471,7 +471,7 @@
                             data-transaction-description="{{ $paymentDescription }}"
                             data-currency-iso="{{ $payment->currency }}"
                             data-button-text="Payer"
-                            data-widget-description="Vote sécurisé Miss & Mister University Bénin 2026"
+                            data-widget-description="Vote sécurisé Miss Kétou LA REINE 2026"
                         >
                             Payer
                         </button>

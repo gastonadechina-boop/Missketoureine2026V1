@@ -13,18 +13,24 @@ use ZipArchive;
 class ClassementPdfExportService
 {
     private const EDITION_LABEL = '1ère Édition 2026';
+
     private const SUBTITLE = 'Tendance des votes & classement - présélection';
+
     private const SIGNATORY = 'Delphin DOSSA EZOUN-AGNAN';
+
     private const PERCENTAGE_CAP = 40.0;
+
     private const PERCENTAGE_THRESHOLD_VOTES = 200;
+
     private const TEMP_ROOT = 'app/tmp/classement-exports';
+
     private const DOMPDF_TEMP_ROOT = 'app/tmp/dompdf';
+
     private const DOMPDF_FONT_ROOT = 'app/tmp/dompdf-fonts';
 
     public function __construct(
         private CandidateRepository $candidates,
-    ) {
-    }
+    ) {}
 
     public function buildClassement(string $categoryName): Collection
     {
@@ -121,9 +127,9 @@ class ClassementPdfExportService
     public function createClassementZip(): array
     {
         $tempRoot = $this->ensureWritableDirectory(storage_path(self::TEMP_ROOT));
-        $tempDirectory = $this->ensureWritableDirectory($tempRoot . DIRECTORY_SEPARATOR . Str::ulid());
+        $tempDirectory = $this->ensureWritableDirectory($tempRoot.DIRECTORY_SEPARATOR.Str::ulid());
 
-        $zipPath = $tempDirectory . DIRECTORY_SEPARATOR . 'classement_miss_mister_2026.zip';
+        $zipPath = $tempDirectory.DIRECTORY_SEPARATOR.'classement_miss_ketou_2026.zip';
         $pdfPaths = [];
 
         logger()->info('Classement PDF export zip build started', [
@@ -131,14 +137,11 @@ class ClassementPdfExportService
         ]);
 
         try {
-            foreach ([
-                'Miss' => 'classement_miss_2026.pdf',
-                'Mister' => 'classement_mister_2026.pdf',
-            ] as $categoryName => $filename) {
-                $pdfPath = $tempDirectory . DIRECTORY_SEPARATOR . $filename;
-                $this->writeFileOrFail($pdfPath, $this->generateCategoryPdf($categoryName));
-                $pdfPaths[$filename] = $pdfPath;
-            }
+            $categoryName = 'Miss';
+            $filename = 'classement_miss_2026.pdf';
+            $pdfPath = $tempDirectory.DIRECTORY_SEPARATOR.$filename;
+            $this->writeFileOrFail($pdfPath, $this->generateCategoryPdf($categoryName));
+            $pdfPaths[$filename] = $pdfPath;
 
             $this->createZipArchive($zipPath, $pdfPaths);
         } catch (\Throwable $exception) {
@@ -153,7 +156,7 @@ class ClassementPdfExportService
 
         return [
             'zip_path' => $zipPath,
-            'download_name' => 'classement_miss_mister_2026.zip',
+            'download_name' => 'classement_miss_ketou_2026.zip',
             'temp_directory' => $tempDirectory,
         ];
     }
@@ -162,9 +165,9 @@ class ClassementPdfExportService
     {
         $normalizedCategory = $this->normalizeCategoryName($categoryName);
         $tempRoot = $this->ensureWritableDirectory(storage_path(self::TEMP_ROOT));
-        $tempDirectory = $this->ensureWritableDirectory($tempRoot . DIRECTORY_SEPARATOR . Str::ulid());
+        $tempDirectory = $this->ensureWritableDirectory($tempRoot.DIRECTORY_SEPARATOR.Str::ulid());
         $filename = sprintf('classement_%s_2026.pdf', strtolower($normalizedCategory));
-        $pdfPath = $tempDirectory . DIRECTORY_SEPARATOR . $filename;
+        $pdfPath = $tempDirectory.DIRECTORY_SEPARATOR.$filename;
 
         try {
             $this->writeFileOrFail($pdfPath, $this->generateCategoryPdf($normalizedCategory));
@@ -183,7 +186,7 @@ class ClassementPdfExportService
 
     public function cleanupExportArtifacts(?string $tempDirectory): void
     {
-        if (!$tempDirectory || !is_dir($tempDirectory)) {
+        if (! $tempDirectory || ! is_dir($tempDirectory)) {
             return;
         }
 
@@ -237,13 +240,13 @@ class ClassementPdfExportService
     private function resolveLogoDataUri(): ?string
     {
         $candidates = [
-            public_path('branding/mmub-logo.jpeg'),
-            public_path('branding/mmub-logo.jpg'),
-            base_path('../../frontend/missandmisterfront/src/assets/logo.jpeg'),
+            public_path('branding/missketou-logo.jpeg'),
+            public_path('branding/missketou-logo.jpg'),
+            public_path('branding/logo.png'),
         ];
 
         foreach ($candidates as $path) {
-            if (!is_file($path)) {
+            if (! is_file($path)) {
                 continue;
             }
 
@@ -255,7 +258,7 @@ class ClassementPdfExportService
             $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
             $mimeType = $extension === 'png' ? 'image/png' : 'image/jpeg';
 
-            return 'data:' . $mimeType . ';base64,' . base64_encode($contents);
+            return 'data:'.$mimeType.';base64,'.base64_encode($contents);
         }
 
         return null;
@@ -272,11 +275,11 @@ class ClassementPdfExportService
     {
         File::ensureDirectoryExists($path);
 
-        if (!is_dir($path)) {
+        if (! is_dir($path)) {
             throw new \RuntimeException(sprintf('Le dossier temporaire %s est introuvable.', $path));
         }
 
-        if (!is_writable($path)) {
+        if (! is_writable($path)) {
             throw new \RuntimeException(sprintf('Le dossier temporaire %s n’est pas accessible en écriture.', $path));
         }
 
@@ -295,12 +298,12 @@ class ClassementPdfExportService
     private function createZipArchive(string $zipPath, array $pdfPaths): void
     {
         if (class_exists(ZipArchive::class)) {
-            $zip = new ZipArchive();
+            $zip = new ZipArchive;
             $opened = $zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
             if ($opened === true) {
                 foreach ($pdfPaths as $filename => $path) {
-                    if (!$zip->addFile($path, $filename)) {
+                    if (! $zip->addFile($path, $filename)) {
                         $zip->close();
                         throw new \RuntimeException(sprintf('Impossible d’ajouter %s dans l’archive ZIP.', $filename));
                     }
@@ -312,7 +315,7 @@ class ClassementPdfExportService
             }
         }
 
-        if (!class_exists(PharData::class)) {
+        if (! class_exists(PharData::class)) {
             throw new \RuntimeException('Aucun moteur ZIP compatible n’est disponible sur le serveur.');
         }
 
@@ -332,7 +335,7 @@ class ClassementPdfExportService
     {
         $normalized = strtolower(trim($categoryName));
 
-        return $normalized === 'mister' ? 'Mister' : 'Miss';
+        return 'Miss';
     }
 
     private function withPdfRuntimeTuning(callable $callback)

@@ -58,14 +58,12 @@ class CandidateRepository
             ->leftJoin('categories', 'categories.id', '=', 'candidates.category_id')
             ->selectRaw('COUNT(candidates.id) as total')
             ->selectRaw("SUM(CASE WHEN LOWER(COALESCE(categories.name, '')) = 'miss' THEN 1 ELSE 0 END) as miss")
-            ->selectRaw("SUM(CASE WHEN LOWER(COALESCE(categories.name, '')) = 'mister' THEN 1 ELSE 0 END) as mister")
             ->selectRaw("SUM(CASE WHEN candidates.is_active = 1 OR candidates.status = 'active' THEN 1 ELSE 0 END) as active")
             ->first();
 
         return [
             'total' => (int) ($summary?->total ?? 0),
             'miss' => (int) ($summary?->miss ?? 0),
-            'mister' => (int) ($summary?->mister ?? 0),
             'active' => (int) ($summary?->active ?? 0),
         ];
     }

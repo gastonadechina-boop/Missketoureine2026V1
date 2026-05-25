@@ -36,7 +36,7 @@ class PaymentWebhookTest extends TestCase
         $category = Category::query()->create([
             'name' => 'Miss',
             'slug' => 'miss',
-            'description' => 'Concours Miss',
+            'description' => 'Concours Miss Kétou LA REINE',
             'status' => 'active',
             'position' => 0,
         ]);

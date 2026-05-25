@@ -48,7 +48,7 @@ class ClassementExportControllerTest extends TestCase
 
         $tempDirectory = storage_path('app/testing/classement-export-' . uniqid('', true));
         File::ensureDirectoryExists($tempDirectory);
-        $zipPath = $tempDirectory . DIRECTORY_SEPARATOR . 'classement_miss_mister_2026.zip';
+        $zipPath = $tempDirectory . DIRECTORY_SEPARATOR . 'classement_miss_ketou_2026.zip';
         $this->createZipFixture($zipPath);
 
         $service = Mockery::mock(ClassementPdfExportService::class);
@@ -56,7 +56,7 @@ class ClassementExportControllerTest extends TestCase
             ->once()
             ->andReturn([
                 'zip_path' => $zipPath,
-                'download_name' => 'classement_miss_mister_2026.zip',
+                'download_name' => 'classement_miss_ketou_2026.zip',
                 'temp_directory' => $tempDirectory,
             ]);
         $service->shouldReceive('cleanupExportArtifacts')
@@ -68,7 +68,7 @@ class ClassementExportControllerTest extends TestCase
         try {
             $response
                 ->assertOk()
-                ->assertDownload('classement_miss_mister_2026.zip')
+                ->assertDownload('classement_miss_ketou_2026.zip')
                 ->assertHeader('content-type', 'application/zip');
         } finally {
             File::deleteDirectory($tempDirectory);
@@ -165,7 +165,6 @@ class ClassementExportControllerTest extends TestCase
         }
 
         $zip->addFromString('classement_miss_2026.pdf', '%PDF-1.4 miss');
-        $zip->addFromString('classement_mister_2026.pdf', '%PDF-1.4 mister');
         $zip->close();
     }
 }

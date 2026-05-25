@@ -120,6 +120,46 @@ const OFFICIAL_MARKERS = [
   },
 ];
 
+const HOME_PILLARS = [
+  {
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+      </svg>
+    ),
+    title: 'Leadership Féminin',
+    description: 'Valoriser la femme ketoise comme actrice de développement local et promouvoir la confiance en soi.',
+  },
+  {
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+        <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8"/>
+      </svg>
+    ),
+    title: 'Autonomisation',
+    description: 'Renforcer les capacités en entrepreneuriat, citoyenneté et gestion de projets communautaires.',
+  },
+  {
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2l3 7 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-7z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+      </svg>
+    ),
+    title: 'Culture & Traditions',
+    description: 'Mettre en avant la richesse du patrimoine de Kétou et sauvegarder l’identité locale.',
+  },
+  {
+    icon: (
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
+      </svg>
+    ),
+    title: 'Impact Social',
+    description: 'Sensibiliser la communauté sur le rôle stratégique de la femme dans le développement.',
+  },
+];
+
 const HOME_OVERVIEW = [
   {
             title: 'Valorisation de la femme ketoise',
@@ -224,6 +264,19 @@ const PROGRAM_STEPS = [
     desc: 'Prise de fonction officielle de la Miss et de ses dauphines pour l\'année en cours.',
     icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2 19h20M4 19V8l4 4 4-6 4 6 4-4v11" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>,
   },
+];
+
+const HOME_TIMELINE = [
+  { step: '01', event: 'Sensibilisation et Recrutement des Facilitateurs Universitaires et des Ambassadeurs', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 11l8-8 8 8-8 8-8-8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+  { step: '02', event: 'Lancement Officiel du Concours', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 21V3h13l-2 5 2 5H4" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg> },
+  { step: '03', event: 'Appel à Candidatures des Miss et Casting', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4z" stroke="currentColor" strokeWidth="1.8"/></svg> },
+  { step: '04', event: 'Formation et Encadrement des Candidates', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 11l2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg> },
+  { step: '05', event: 'Divertissement, Rencontres et Visites Touristiques', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8"/></svg> },
+  { step: '06', event: 'Phase Challenge et Vote en Ligne', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+  { step: '07', event: 'Grande Finale et Couronnement', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.8"/></svg> },
+  { step: '08', event: 'Publication des moments forts de l\'événement', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+  { step: '09', event: 'Remerciements des Sponsors et Partenaires', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg> },
+  { step: '10', event: 'Officialisation du Mandat de la Miss et ses Dauphine', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 19h20M4 19V8l4 4 4-6 4 6 4-4v11" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg> },
 ];
 
 const INITIATOR_PILLARS = [
@@ -628,7 +681,7 @@ const Home = () => {
           viewport={{ once: false, amount: 0.2 }}
         >
         
-          <h2>Le concours <span className="text-gold">en quelques repères</span></h2>
+          <h2>Le concours <span className="text-gold">en un coup d'œil</span></h2>
           <div className="section-divider centered" />
           <p className="section-lead">
             MISS KÉTOU – LA REINE met en lumière les candidates les plus méritantes, bien au-delà de l’apparence physique, en valorisant leur intelligence, leur leadership, leur éloquence et leur engagement social.
@@ -671,7 +724,7 @@ const Home = () => {
             transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
           >
             <span className="section-eyebrow">Vision de l’initiateur</span>
-            <h2>Un concours qui fait <span className="text-gold">rayonner la jeunesse ketoise ainsi que sa riche culture</span></h2>
+            <h2>Un concours qui <span className="text-gold">célèbre la jeunesse ketoise et son patrimoine culturel</span></h2>
             <div className="section-divider" />
             <p>
               À l’origine de MISS KÉTOU – LA REINE, il y a une volonté claire :
@@ -736,6 +789,35 @@ const Home = () => {
       </div>
     </section>
 
+    <section className="home-values section">
+      <div className="container">
+        <motion.div
+          className="section-header text-center"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+        >
+          <span className="section-eyebrow">Nos piliers</span>
+          <h2>Les <span className="text-gold">valeurs</span> qui portent <span translate="no">MISS KÉTOU – LA REINE</span></h2>
+          <div className="section-divider centered" />
+        </motion.div>
+        <div className="values-grid">
+          {HOME_PILLARS.map((pillar, i) => (
+            <motion.div
+              key={pillar.title}
+              className="value-card"
+              {...buildRevealProps(i)}
+              whileHover={{ y: -8 }}
+            >
+              <div className="value-icon">{pillar.icon}</div>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <div className="section-divider-gold" />
 
        {/* ══════════════════════════════════════════ STATS */}
@@ -748,7 +830,7 @@ const Home = () => {
           viewport={{ once: false, amount: 0.2 }}
         >
           <span className="section-eyebrow">Repères officiels</span>
-          <h2>Une plateforme qui présenter le <span className="text-gold"> Miss Kétou</span></h2>
+          <h2>Une vitrine qui dévoile le <span className="text-gold">Miss Kétou</span></h2>
           <div className="section-divider centered" />
           <p className="section-lead">
             MISS KÉTOU – LA REINE n’est pas uniquement un espace de vote :
@@ -786,7 +868,7 @@ const Home = () => {
         >
           <div className="home-discover-copy">
             <span className="section-eyebrow">Candidates retenues</span>
-            <h2>Découvrir les candidates</h2>
+            <h2>Explorer les candidates</h2>
             <p>
               Consultez les profils officiels, les arrondissements représentés et les parcours
               des candidates qualifiées pour cette édition inaugurale.
@@ -820,7 +902,7 @@ const Home = () => {
           <motion.div className="section-header text-center"
             initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.2 }}>
             <span className="section-eyebrow">Classement en direct</span>
-            <h2>Top <span className="text-gold">Candidates</span></h2>
+            <h2><span className="text-gold">Candidates</span> en tête</h2>
             <div className="section-divider centered" />
           </motion.div>
 
@@ -950,9 +1032,41 @@ const Home = () => {
       </div>
     </section> */}
 
+    <section className="home-timeline section">
+      <div className="container">
+        <motion.div
+          className="section-header text-center"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+        >
+          <span className="section-eyebrow">Parcours du concours</span>
+          <h2>Les grandes <span className="text-gold">étapes</span></h2>
+          <div className="section-divider centered" />
+        </motion.div>
+        <div className="timeline">
+          <div className="timeline-line" />
+          {HOME_TIMELINE.map((item, i) => (
+            <motion.div
+              key={item.step}
+              className={`timeline-item ${i % 2 === 0 ? 'tl-left' : 'tl-right'}`}
+              {...buildRevealProps(i)}
+            >
+              <div className="timeline-dot" />
+              <div className="timeline-content">
+                <span className="timeline-year">{item.step}</span>
+                <span className="timeline-icon" aria-hidden="true">{item.icon}</span>
+                <p>{item.event}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+
       <PartnerShowcase
   
-      title="Nos partenaires"
+      title="Partenaires et soutiens"
       description="Découvrez les institutions, entreprises et médias qui accompagnent cette édition de MISS KÉTOU LA REINE."
       contactTitle="Vous souhaitez devenir partenaire ?"
       contactDescription="Envoyez un message WhatsApp au comité organisateur pour proposer votre collaboration et faire apparaître votre logo dans le carrousel public."
@@ -974,7 +1088,7 @@ const Home = () => {
           initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.18 }}>
           <div className="cta-final-orb" aria-hidden="true" />
           <span className="section-eyebrow">Première édition 2026</span>
-          <h2>Rejoignez<br /><span className="text-gold">l’aventure</span></h2>
+          <h2>Embarquez dans<br /><span className="text-gold">l’aventure</span></h2>
           <p>La plateforme officielle du concours réunit les jeunes filles de Kétou autour de la culture, du leadership et de l’engagement citoyen.</p>
           <div className="cta-final-actions">
             <Link to="/candidates">

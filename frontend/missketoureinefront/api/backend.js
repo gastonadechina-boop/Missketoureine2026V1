@@ -1,4 +1,4 @@
-const UPSTREAM_API_BASE_URL = 'https://api.missmisteruniversitybenin.com/api';
+const UPSTREAM_API_BASE_URL = 'https://api.missketoureine.com/api';
 const RETRYABLE_STATUS_CODES = new Set([408, 429, 500, 502, 503, 504]);
 // Laravel already versions and caches these public payloads server-side.
 // Edge-caching them again on Vercel has caused stale empty datasets on the
@@ -126,7 +126,7 @@ const buildProxyRequestHeaders = (request) => {
     }
   });
 
-  headers.set('user-agent', 'MMUB-Vercel-Proxy/1.0');
+  headers.set('user-agent', 'MKR-Vercel-Proxy/1.0');
   return headers;
 };
 

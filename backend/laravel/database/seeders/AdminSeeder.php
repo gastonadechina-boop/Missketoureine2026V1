@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,7 +17,7 @@ class AdminSeeder extends Seeder
         $this->upsertAdmin(
             prefix: 'PROD_ADMIN',
             localFallbacks: [
-                'email' => 'admin@missandmister.test',
+                'email' => 'admin@missketoureine.test',
                 'password' => 'admin1234',
                 'name' => 'Super Admin',
                 'phone' => '0000000000',
@@ -31,9 +30,9 @@ class AdminSeeder extends Seeder
         $this->upsertAdmin(
             prefix: 'STAFF_ADMIN',
             localFallbacks: [
-                'email' => 'missmisteruniversitybenin@gmail.com',
-                'password' => 'AdminMmub2026!',
-                'name' => 'Administrateur MMUB',
+                'email' => 'missketoureine@gmail.com',
+                'password' => 'AdminMkr2026!',
+                'name' => 'Administrateur Miss Kétou LA REINE',
                 'phone' => '+22955748787',
                 'role' => 'admin',
                 'status' => 'active',

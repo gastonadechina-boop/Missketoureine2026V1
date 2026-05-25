@@ -118,7 +118,7 @@ class ClassementPdfExportServiceTest extends TestCase
 
         try {
             $this->assertFileExists($export['zip_path']);
-            $this->assertSame('classement_miss_mister_2026.zip', $export['download_name']);
+            $this->assertSame('classement_miss_ketou_2026.zip', $export['download_name']);
 
             $zip = new ZipArchive();
             $opened = $zip->open($export['zip_path']);
@@ -131,16 +131,12 @@ class ClassementPdfExportServiceTest extends TestCase
             }
 
             $this->assertContains('classement_miss_2026.pdf', $entries);
-            $this->assertContains('classement_mister_2026.pdf', $entries);
 
             $missPdf = $zip->getFromName('classement_miss_2026.pdf');
-            $misterPdf = $zip->getFromName('classement_mister_2026.pdf');
             $zip->close();
 
             $this->assertIsString($missPdf);
-            $this->assertIsString($misterPdf);
             $this->assertStringStartsWith('%PDF', $missPdf);
-            $this->assertStringStartsWith('%PDF', $misterPdf);
         } finally {
             $service->cleanupExportArtifacts($export['temp_directory'] ?? null);
         }

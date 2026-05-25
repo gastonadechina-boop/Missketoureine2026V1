@@ -162,6 +162,41 @@ const MaintenanceScreen = ({ publicSettings, onCountdownComplete }) => {
   );
 };
 
+const ServiceUnavailableScreen = ({ onRetry }) => {
+  const [retrying, setRetrying] = useState(false);
+
+  const handleRetry = async () => {
+    if (retrying) return;
+    setRetrying(true);
+    try {
+      await onRetry?.();
+    } catch {
+      // Le retry a echoue, on reste sur cet ecran.
+    } finally {
+      setRetrying(false);
+    }
+  };
+
+  return (
+    <div className="maintenance-page">
+      <div className="maintenance-box">
+        <span className="maintenance-pill">Service indisponible</span>
+        <h1>Impossible de charger le site</h1>
+        <p>
+          Le serveur est momentanément injoignable. Veuillez réessayer dans quelques instants.
+        </p>
+        <button
+          className="retry-btn"
+          onClick={handleRetry}
+          disabled={retrying}
+        >
+          {retrying ? 'Connexion en cours...' : 'Réessayer'}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const ScrollToTop = () => {
   const location = useLocation();
 
@@ -270,6 +305,10 @@ const PublicLayout = () => {
         </div>
       </div>
     );
+  }
+
+  if (bootstrapError && !publicSettings && !settingsLoading && minTimeDone) {
+    return <ServiceUnavailableScreen onRetry={() => refreshPublicBootstrap({ force: true })} />;
   }
 
   if (votingState.maintenanceMode && !adminPreviewEnabled) {

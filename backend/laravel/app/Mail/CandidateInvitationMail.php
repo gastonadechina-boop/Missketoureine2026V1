@@ -19,13 +19,12 @@ class CandidateInvitationMail extends Mailable
         public User $user,
         public string $temporaryPassword,
         public string $loginUrl,
-    ) {
-    }
+    ) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Vos accès candidat Miss & Mister University Bénin',
+            subject: 'Vos accès candidat Miss Kétou LA REINE',
         );
     }
 

@@ -12,6 +12,8 @@ const EMPTY_ARRAY = [];
 const PUBLIC_UPDATE_CHECK_INTERVAL_MS = 15000;
 const PUBLIC_UPDATE_ALLOWED_SCOPES = ['global', 'settings', 'candidates', 'partners'];
 
+const TRANSPORT_ERROR_BACKOFF_MS = 60000;
+
 export const usePublicBootstrapData = () => {
   const cachedInitData = useMemo(() => readCachedPublicInitData(), []);
   const cachedSettings = useMemo(
@@ -39,6 +41,7 @@ export const usePublicBootstrapData = () => {
   const [bootstrapError, setBootstrapError] = useState(null);
   const lastUpdateRef = useRef(cachedUpdateSignal);
   const bootstrapRequestRef = useRef(null);
+  const transportErrorUntilRef = useRef(0);
 
   const applyBootstrapPayload = useCallback((payload = {}) => {
     const nextSettings = payload?.settings || null;
@@ -73,9 +76,26 @@ export const usePublicBootstrapData = () => {
     });
   }, []);
 
-  const fetchPublicBootstrap = useCallback(async () => {
-    if (bootstrapRequestRef.current) {
+  const fetchPublicBootstrap = useCallback(async (options = {}) => {
+    const isForced = Boolean(options?.force);
+
+    if (!isForced && bootstrapRequestRef.current) {
       return bootstrapRequestRef.current;
+    }
+
+    if (!isForced && Date.now() < transportErrorUntilRef.current) {
+      const err = new Error('Le service est temporairement indisponible. Réessayez dans quelques secondes.');
+      err.status = 503;
+      err.isRetryable = true;
+      err.isNetworkError = true;
+      err.isTransportError = true;
+      setBootstrapError(err);
+      setBootstrapLoading(false);
+      return;
+    }
+
+    if (isForced) {
+      transportErrorUntilRef.current = 0;
     }
 
     bootstrapRequestRef.current = (async () => {
@@ -85,7 +105,11 @@ export const usePublicBootstrapData = () => {
       } catch (error) {
         setBootstrapError(error);
         setBootstrapLoading(false);
-        console.error('Erreur chargement bootstrap public:', error);
+        if (error?.isTransportError || error?.isNetworkError) {
+          transportErrorUntilRef.current = Date.now() + TRANSPORT_ERROR_BACKOFF_MS;
+        } else {
+          console.error('Erreur chargement bootstrap public:', error);
+        }
       } finally {
         bootstrapRequestRef.current = null;
       }
@@ -107,6 +131,10 @@ export const usePublicBootstrapData = () => {
       return;
     }
 
+    if (Date.now() < transportErrorUntilRef.current) {
+      return;
+    }
+
     try {
       const signal = await publicAPI.getLastUpdate();
       const nextVersion = Number(signal?.version || 0);
@@ -119,7 +147,11 @@ export const usePublicBootstrapData = () => {
         await fetchPublicBootstrap();
       }
     } catch (error) {
-      console.error('Erreur vérification mise à jour publique:', error);
+      if (error?.isTransportError || error?.isNetworkError) {
+        transportErrorUntilRef.current = Date.now() + TRANSPORT_ERROR_BACKOFF_MS;
+      } else {
+        console.error('Erreur vérification mise à jour publique:', error);
+      }
     }
   }, [fetchPublicBootstrap]);
 

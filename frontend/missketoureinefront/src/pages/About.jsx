@@ -37,7 +37,7 @@ const buildRevealProps = (index = 0, distance = 42) => {
 const heroStats = [
   { value: '1ère', label: 'Édition officielle', icon: '★' },
   { value: '18-28', label: 'Âge des participants', icon: '◎' },
-  { value: 'Nationale', label: 'Portée du concours', icon: '▲' },
+  { value: 'Kétou', label: 'Rayonnement', icon: '▲' },
 ];
 
 const pillars = [
@@ -147,11 +147,11 @@ const About = () => (
       </div>
       <div className="container">
         <motion.div className="about-hero-content" variants={fadeUp} initial="hidden" animate="visible">
-          <span className="section-eyebrow">Qui sommes-nous</span>
+          <span className="section-eyebrow">Notre mission</span>
           <h1>À propos de <span className="text-gold" translate="no">Miss Kétou LA REINE</span></h1>
           <p className="about-hero-subtitle">
-            Une plateforme d’expression et de transformation sociale pour la jeunesse de Kétou,
-            au leadership, à la culture, à l’éloquence et à l’engagement social de la jeunesse béninoise.
+            Une plateforme d'expression et de transformation sociale dédiée à la jeunesse de Kétou,
+            qui place le leadership, la culture, l'éloquence et l'engagement citoyen au cœur de son projet.
           </p>
 
           <div className="about-hero-center">
@@ -179,7 +179,7 @@ const About = () => (
         <div className="mission-grid">
           <motion.div className="mission-text" initial={{ opacity: 0, x: -42, y: 18, scale: 0.95, filter: 'blur(10px)' }} whileInView={{ opacity: 1, x: 0, y: 0, scale: 1, filter: 'blur(0px)' }} viewport={{ once: false, amount: 0.18 }} transition={{ duration: 0.78, ease: [0.22, 1, 0.36, 1] }}>
         
-            <h2>Une plateforme pour révéler les talents <span className="text-gold">universitaires</span></h2>
+            <h2>Une couronne pour l'<span className="text-gold">excellence féminine</span></h2>
             <div className="section-divider" />
             <p>
               Dans un contexte où l’éducation, l’excellence académique et l’engagement de la
@@ -238,8 +238,8 @@ const About = () => (
     <section className="about-values section">
       <div className="container">
         <motion.div className="section-header" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }}>
-    
-            <h2>Les <span className="text-gold">piliers</span> qui façonnent <span translate="no">MISS KÉTOU – LA REINE</span></h2>
+            <span className="section-eyebrow">Nos piliers</span>
+            <h2>Les <span className="text-gold">valeurs</span> qui portent <span translate="no">MISS KÉTOU – LA REINE</span></h2>
             <div className="section-divider centered" />
           </motion.div>
         <div className="values-grid">
@@ -263,7 +263,7 @@ const About = () => (
       <div className="container">
         <motion.div className="section-header" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }}>
           <span className="section-eyebrow">Parcours du concours</span>
-          <h2>Les grandes <span className="text-gold">phases</span></h2>
+          <h2>Les grandes <span className="text-gold">étapes</span></h2>
           <div className="section-divider centered" />
         </motion.div>
         <div className="timeline">
@@ -290,7 +290,7 @@ const About = () => (
       <div className="container">
         <motion.div className="section-header" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }}>
           <span className="section-eyebrow">Formation et épreuves</span>
-          <h2>Un processus <span className="text-gold">complet</span> et encadré</h2>
+          <h2>Un cadre d'<span className="text-gold">excellence</span> complet</h2>
           <div className="section-divider centered" />
         </motion.div>
         <div className="values-grid">
@@ -316,8 +316,8 @@ const About = () => (
     <section className="about-impact section">
       <div className="container">
         <motion.div className="section-header" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }}>
-          
-          <h2>Pourquoi le concours <span className="text-gold">compte</span></h2>
+          <span className="section-eyebrow">Retombées</span>
+          <h2>L'<span className="text-gold">impact</span> du concours</h2>
           <div className="section-divider centered" />
         </motion.div>
         <div className="values-grid">
@@ -343,7 +343,7 @@ const About = () => (
 
     <PartnerShowcase
       
-      title="Nos partenaires"
+      title="Partenaires et soutiens"
       description="Le concours accueille les partenaires qui souhaitent soutenir la jeunesse béninoise tout en gagnant en visibilité et en crédibilité."
       contactTitle="Rejoindre le projet"
       contactDescription="Une entreprise, une école ou une institution peut prendre contact directement avec l’équipe organisatrice sur WhatsApp."
@@ -355,7 +355,7 @@ const About = () => (
       <div className="container">
         <motion.div className="cta-box" variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: false, amount: 0.2 }}>
           <span className="section-eyebrow">Prêt à participer ?</span>
-          <h2>Rejoignez <span className="text-gold">l’aventure</span></h2>
+          <h2>Embarquez dans <span className="text-gold">l’aventure</span></h2>
           <p>
             La plateforme officielle du concours réunit étudiants, arrondissements et partenaires
             autour de l’excellence académique, du leadership et de l’engagement social.

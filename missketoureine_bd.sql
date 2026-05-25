@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `missandmister_bd`
+-- Base de données : `missketoureine_bd`
 --
 
 -- --------------------------------------------------------
@@ -196,7 +196,7 @@ CREATE TABLE `admins` (
 
 INSERT INTO `admins` (`id`, `name`, `email`, `phone`, `password`, `role`, `status`, `remember_token`, `deleted_at`, `created_at`, `updated_at`) VALUES
 (1, 'Super Admin', 'admin@example.com', '0700000001', '$2y$12$o/ls0BPoM8BAlck/nu35t.lYSzHpvktyNek94BCscse94J9JVL7B6', 'superadmin', 'active', NULL, NULL, '2026-03-14 17:11:49', '2026-03-15 21:30:26'),
-(3, 'Super Admin', 'admin@missandmister.test', '0000000000', '$2y$12$hn/Jh83hPSMH1CZZbSJSuuoi/J5SJWfk.FlMlC3MqJq2YVWgBBRo.', 'superadmin', 'active', NULL, NULL, '2026-03-16 09:14:34', '2026-03-16 09:14:34');
+(3, 'Super Admin', 'admin@missketoureine.test', '0000000000', '$2y$12$hn/Jh83hPSMH1CZZbSJSuuoi/J5SJWfk.FlMlC3MqJq2YVWgBBRo.', 'superadmin', 'active', NULL, NULL, '2026-03-16 09:14:34', '2026-03-16 09:14:34');
 
 -- --------------------------------------------------------
 
@@ -303,8 +303,7 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `status`, `position`, `deleted_at`, `created_at`, `updated_at`) VALUES
-(1, 'Miss', 'miss', 'Categorie des femmes', 'active', 0, NULL, NULL, NULL),
-(2, 'Mister', 'mister', 'Categorie des hommes', 'active', 0, NULL, NULL, NULL);
+(1, 'Miss', 'miss', 'Categorie des femmes', 'active', 0, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -369,9 +368,9 @@ CREATE TABLE `gallery_items` (
 --
 
 INSERT INTO `gallery_items` (`id`, `title`, `category`, `alt_text`, `caption`, `image_path`, `image_meta`, `layout_span`, `sort_order`, `is_published`, `published_at`, `created_at`, `updated_at`) VALUES
-(1, 'Soirée gala', 'Cérémonie', 'Soirée gala', NULL, 'gallery/photos/fRHsWRk7WMvKoZ1Sfxpe9ZgDUJlp6HTNjhNtUTBp.png', '{\"width\":1536,\"height\":1024,\"size\":2358389,\"mime\":\"image\\/png\",\"original_name\":\"Miss & Mister University B\\u00e9nin \\u00e9l\\u00e9gant.png\"}', 'wide', 1, 1, '2026-04-08 21:39:45', '2026-04-08 20:47:05', '2026-04-08 21:39:45'),
+(1, 'Soirée gala', 'Cérémonie', 'Soirée gala', NULL, 'gallery/photos/fRHsWRk7WMvKoZ1Sfxpe9ZgDUJlp6HTNjhNtUTBp.png', '{\"width\":1536,\"height\":1024,\"size\":2358389,\"mime\":\"image\\/png\",\"original_name\":\"Miss K\\u00e9tou LA REINE \\u00e9l\\u00e9gant.png\"}', 'wide', 1, 1, '2026-04-08 21:39:45', '2026-04-08 20:47:05', '2026-04-08 21:39:45'),
 (2, 'CANDIDATE', 'Candidats', 'CANDIDATE', NULL, 'gallery/photos/P7kymgvbL6oeOMoyETxAa1MPnNuzbyeIcYwngTUq.jpg', '{\"width\":832,\"height\":1248,\"size\":107340,\"mime\":\"image\\/jpeg\",\"original_name\":\"WhatsApp Image 2026-04-05 at 21.42.00 (1).jpeg\"}', 'tall', 4, 0, NULL, '2026-04-08 21:38:08', '2026-04-08 21:44:16'),
-(3, 'Soirée', 'Gala', 'Soirée', NULL, 'gallery/photos/5vtECX5AF1jJWNAjDRKD9EB196iNUhPBmZmM4ZXr.png', '{\"width\":1536,\"height\":1024,\"size\":2294924,\"mime\":\"image\\/png\",\"original_name\":\"Miss & Mister University B\\u00e9nin 2023.png\"}', 'wide', 2, 1, '2026-04-08 21:41:45', '2026-04-08 21:41:45', '2026-04-08 21:41:45');
+(3, 'Soirée', 'Gala', 'Soirée', NULL, 'gallery/photos/5vtECX5AF1jJWNAjDRKD9EB196iNUhPBmZmM4ZXr.png', '{\"width\":1536,\"height\":1024,\"size\":2294924,\"mime\":\"image\\/png\",\"original_name\":\"Miss K\\u00e9tou LA REINE 2023.png\"}', 'wide', 2, 1, '2026-04-08 21:41:45', '2026-04-08 21:41:45', '2026-04-08 21:41:45');
 
 -- --------------------------------------------------------
 

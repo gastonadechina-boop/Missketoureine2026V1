@@ -16,8 +16,7 @@ class PaymentPageController extends Controller
     public function __construct(
         private FedaPayService $fedapay,
         private PaymentService $payments,
-    ) {
-    }
+    ) {}
 
     public function show(string $reference): View
     {
@@ -37,7 +36,7 @@ class PaymentPageController extends Controller
                 ->find($candidateId);
 
             if ($candidate) {
-                $candidateName = trim(($candidate->first_name ?? '') . ' ' . ($candidate->last_name ?? ''));
+                $candidateName = trim(($candidate->first_name ?? '').' '.($candidate->last_name ?? ''));
                 $candidatePublicUid = $candidatePublicUid !== '' ? $candidatePublicUid : (string) ($candidate->public_uid ?? '');
                 $candidateSlug = $candidateSlug !== '' ? $candidateSlug : (string) ($candidate->slug ?? '');
             }
@@ -51,7 +50,7 @@ class PaymentPageController extends Controller
             ? $candidatePublicUid
             : ($candidateSlug !== '' ? $candidateSlug : null);
         $candidateLink = $candidateIdentifier
-            ? "{$frontendUrl}/candidates/" . rawurlencode($candidateIdentifier)
+            ? "{$frontendUrl}/candidates/".rawurlencode($candidateIdentifier)
             : "{$frontendUrl}/candidates";
 
         if ($candidateLink === '/candidates') {
@@ -73,8 +72,8 @@ class PaymentPageController extends Controller
             ? 'success'
             : (($payment->status === 'failed' || $voteFailed) ? 'failed' : 'opening');
         $paymentDescription = $candidateName !== 'Candidat inconnu'
-            ? 'Vote sécurisé pour ' . $candidateName
-            : 'Paiement sécurisé Miss & Mister University Bénin 2026';
+            ? 'Vote sécurisé pour '.$candidateName
+            : 'Paiement sécurisé Miss Kétou LA REINE 2026';
         $confirmationUrls = $this->buildConfirmationUrls(
             $payment,
             $frontendUrl
@@ -140,7 +139,7 @@ class PaymentPageController extends Controller
     {
         $payment->loadMissing('vote');
 
-        if (!$payment->transaction_id) {
+        if (! $payment->transaction_id) {
             return $payment;
         }
 
@@ -166,7 +165,7 @@ class PaymentPageController extends Controller
         }
 
         $merchantReference = trim((string) Arr::get($remoteTransaction, 'merchant_reference', ''));
-        if ($merchantReference !== '' && !hash_equals($payment->reference, $merchantReference)) {
+        if ($merchantReference !== '' && ! hash_equals($payment->reference, $merchantReference)) {
             logger()->warning('FedaPay callback reference mismatch', [
                 'payment_id' => $payment->id,
                 'reference' => $payment->reference,
@@ -185,14 +184,15 @@ class PaymentPageController extends Controller
         Payment $payment,
         string $frontendUrl,
     ): array {
-        $basePath = ($frontendUrl !== '' ? $frontendUrl : '') . '/payment/confirmation';
+        $basePath = ($frontendUrl !== '' ? $frontendUrl : '').'/payment/confirmation';
         $baseParams = array_filter([
             'reference' => $payment->reference,
         ], static fn ($value) => $value !== null && $value !== '');
 
         $build = function (string $status) use ($basePath, $baseParams): string {
             $params = array_merge($baseParams, ['status' => $status]);
-            return $basePath . '?' . http_build_query($params);
+
+            return $basePath.'?'.http_build_query($params);
         };
 
         return [

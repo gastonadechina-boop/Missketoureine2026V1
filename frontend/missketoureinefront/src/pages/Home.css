@@ -818,7 +818,7 @@
   background: radial-gradient(ellipse, rgba(212,175,55,0.12) 0%, rgba(212,175,55,0.04) 30%, transparent 60%);
   border-radius: 50%;
   pointer-events: none;
-  animation: hcsAuraPulse 4s ease-in-out infinite;
+  animation: none;
 }
 
 @keyframes hcsAuraPulse {
@@ -843,7 +843,7 @@
   background: var(--gold);
   border-radius: 50%;
   box-shadow: 0 0 6px rgba(212,175,55,0.8), 0 0 12px rgba(212,175,55,0.4);
-  animation: hcsParticleRise linear infinite;
+  animation: none;
   opacity: 0;
 }
 
@@ -902,13 +902,13 @@
   border-radius: 20px;
   cursor: default;
   overflow: visible;
-  animation: hcsCardFloat var(--float-dur, 4s) ease-in-out infinite;
+  animation: none;
 }
 
-.hcs-card:nth-child(1) { --float-dur: 4s; animation-delay: 0s; }
-.hcs-card:nth-child(2) { --float-dur: 4.4s; animation-delay: 0.3s; }
-.hcs-card:nth-child(3) { --float-dur: 3.8s; animation-delay: 0.6s; }
-.hcs-card:nth-child(4) { --float-dur: 4.6s; animation-delay: 0.9s; }
+.hcs-card:nth-child(1) { --float-dur: 4s; }
+.hcs-card:nth-child(2) { --float-dur: 4.4s; }
+.hcs-card:nth-child(3) { --float-dur: 3.8s; }
+.hcs-card:nth-child(4) { --float-dur: 4.6s; }
 
 @keyframes hcsCardFloat {
   0%, 100% { transform: translateY(0); }
@@ -926,7 +926,7 @@
   font-weight: 900;
   color: var(--gold);
   opacity: 0.35;
-  animation: hcsColonPulse 1.5s ease-in-out infinite;
+  animation: none;
   pointer-events: none;
   font-family: var(--font-primary);
   text-shadow: 0 0 20px rgba(212,175,55,0.3);
@@ -953,7 +953,7 @@
     transparent
   );
   z-index: -1;
-  animation: hcsBorderSpin 6s linear infinite;
+  animation: none;
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
@@ -1046,7 +1046,7 @@
   height: 100%;
   background: var(--gold-gradient);
   background-size: 200% auto;
-  animation: goldFlow 3s ease infinite;
+  animation: none;
   border-radius: 4px;
   box-shadow: 0 0 20px rgba(212,175,55,0.3), 0 0 40px rgba(212,175,55,0.1);
   position: relative;
@@ -1062,7 +1062,7 @@
   border-radius: 50%;
   filter: blur(6px);
   opacity: 0.7;
-  animation: hcsBeamPulse 1.5s ease-in-out infinite;
+  animation: none;
 }
 
 @keyframes hcsBeamPulse {
@@ -2756,6 +2756,165 @@
   .cta-final-actions .btn-hero-primary,
   .cta-final-actions .btn-hero-secondary { padding: 1rem 2rem; font-size: 0.9rem; }
   .cta-final { padding: 2rem 1rem; }
+}
+
+.home-values {
+  background: rgba(15, 15, 15, 0.5);
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.value-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-normal);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.value-card:hover {
+  border-color: rgba(212,175,55,0.28);
+  box-shadow: 0 16px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.08);
+  transform: translateY(-4px);
+}
+
+.value-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(212,175,55,0.1);
+  border: 1px solid rgba(212,175,55,0.25);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.2rem;
+  color: var(--primary-gold);
+}
+
+.value-card h3 {
+  font-size: 1rem;
+  color: var(--white);
+  margin-bottom: 0.6rem;
+}
+
+.value-card p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .values-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .values-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+}
+
+.home-timeline {
+  background: transparent;
+}
+
+.timeline {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(212,175,55,0.5), transparent);
+  transform: translateX(-50%);
+}
+
+.timeline-item {
+  position: relative;
+  width: 45%;
+  margin-bottom: 2.5rem;
+}
+
+.timeline-item.tl-left { margin-right: auto; text-align: right; padding-right: 2.5rem; }
+.timeline-item.tl-right { margin-left: auto; text-align: left; padding-left: 2.5rem; }
+
+.timeline-dot {
+  position: absolute;
+  top: 8px;
+  width: 14px;
+  height: 14px;
+  background: var(--primary-gold);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(212,175,55,0.2);
+}
+
+.tl-left .timeline-dot { right: -7px; }
+.tl-right .timeline-dot { left: -7px; }
+
+.timeline-content {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  transition: border-color var(--transition-normal);
+}
+
+.timeline-content:hover {
+  border-color: rgba(212,175,55,0.28);
+}
+
+.timeline-year {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary-gold);
+  font-family: var(--font-primary);
+  margin-bottom: 0.4rem;
+}
+
+.timeline-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 0.65rem;
+  border-radius: 12px;
+  background: rgba(212,175,55,0.1);
+  border: 1px solid rgba(212,175,55,0.22);
+  color: var(--primary-gold);
+}
+
+.timeline-content p {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .timeline-item { width: 100%; margin-left: 0 !important; margin-right: 0 !important; text-align: left !important; padding-left: 2.5rem !important; padding-right: 0 !important; }
+  .tl-left .timeline-dot { right: auto; left: -7px; }
+  .timeline-line { left: 6px; }
+}
+
+@media (max-width: 480px) {
+  .values-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 520px) {

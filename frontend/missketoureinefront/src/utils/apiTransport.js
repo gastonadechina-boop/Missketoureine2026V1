@@ -1,6 +1,6 @@
 const PRODUCTION_PROXY_HOSTS = new Set([
-  'missmisteruniversitybenin.com',
-  'www.missmisteruniversitybenin.com',
+  'missketoureine.com',
+  'www.missketoureine.com',
 ]);
 
 const TRANSPORT_STORAGE_KEY = 'missketou_api_transport_mode_v5';

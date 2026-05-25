@@ -3,8 +3,8 @@
 $defaultAllowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    'https://missmisteruniversitybenin.com',
-    'https://www.missmisteruniversitybenin.com',
+    'https://missketoureine.com',
+    'https://www.missketoureine.com',
 ];
 
 $defaultAllowedOriginPatterns = [
