@@ -3,26 +3,29 @@
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CandidateController;
-use App\Http\Controllers\Api\ClassementExportController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ClassementExportController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\FaqController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\PartnerController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\PublicCandidateController;
 use App\Http\Controllers\Api\PublicInitController;
 use App\Http\Controllers\Api\ResultController;
 use App\Http\Controllers\Api\SettingsController;
 use App\Http\Controllers\Api\StatsController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VoteController;
-use App\Http\Controllers\Api\PublicCandidateController;
 use App\Http\Controllers\PublicMediaController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register'])->middleware('throttle:login');
     Route::post('login', [AuthController::class, 'login'])->middleware('throttle:login');
-    Route::post('admin-login', [AuthController::class, 'adminLogin']);
+    Route::post('admin-login', [AuthController::class, 'adminLogin'])->middleware('throttle:login');
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:login');
+    Route::post('reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:login');
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
         Route::get('me', [AuthController::class, 'me'])->name('auth.me');
@@ -32,7 +35,7 @@ Route::prefix('auth')->group(function () {
 
 // Aliases for SPA expectations
 Route::post('login', [AuthController::class, 'login'])->middleware('throttle:login');
-Route::post('admin/login', [AuthController::class, 'adminLogin']);
+Route::post('admin/login', [AuthController::class, 'adminLogin'])->middleware('throttle:login');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('me', [AuthController::class, 'me']);
@@ -43,11 +46,15 @@ Route::prefix('public')->middleware('throttle:public-read')->group(function () {
     Route::get('init-data', [PublicInitController::class, 'show']);
     Route::get('last-update', [PublicInitController::class, 'lastUpdate']);
     Route::get('candidates', [PublicCandidateController::class, 'index']);
+    Route::get('candidates/search', [PublicCandidateController::class, 'search']);
     Route::get('candidates/{identifier}', [PublicCandidateController::class, 'show']);
     Route::get('media/{path}', [PublicMediaController::class, 'show'])->where('path', '.*');
     Route::get('stats', [StatsController::class, 'publicStats']);
     Route::get('gallery', [GalleryController::class, 'publicIndex']);
     Route::get('partners', [PartnerController::class, 'publicIndex']);
+    Route::get('results', [ResultController::class, 'publicIndex']);
+    Route::get('results/ranking', [ResultController::class, 'ranking']);
+    Route::get('faq', [FaqController::class, 'publicIndex']);
 });
 
 // Legacy public endpoints (kept for compatibility)
@@ -59,6 +66,7 @@ Route::post('contact', [ContactController::class, 'store'])->middleware('throttl
 Route::middleware(['auth:sanctum', 'force_password_change'])->group(function () {
     Route::get('payments/{payment}', [PaymentController::class, 'show']);
     Route::get('profile', [UserController::class, 'profile']);
+    Route::get('votes/history', [VoteController::class, 'history']);
 });
 
 Route::post('payment/webhook', [PaymentController::class, 'webhook'])->middleware('throttle:webhook-fedapay');
@@ -97,6 +105,10 @@ Route::middleware(['auth:sanctum', 'role:admin,superadmin'])->prefix('admin')->g
     Route::apiResource('results', ResultController::class)->only(['index', 'store', 'update']);
     Route::apiResource('settings', SettingsController::class)->only(['index', 'store', 'update']);
     Route::get('activity', [AdminController::class, 'activity']);
+    Route::get('faq', [FaqController::class, 'adminIndex']);
+    Route::post('faq', [FaqController::class, 'store']);
+    Route::put('faq/{faq}', [FaqController::class, 'update']);
+    Route::delete('faq/{faq}', [FaqController::class, 'destroy']);
 });
 
 Route::middleware(['auth:sanctum', 'role:admin,superadmin'])->get('test-pdf', [ClassementExportController::class, 'testPdf']);

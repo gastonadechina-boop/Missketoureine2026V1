@@ -24,7 +24,7 @@ class PaymentRequest extends FormRequest
     {
         return [
             'amount' => ['required', 'numeric', 'min:100'],
-            'currency' => ['sometimes', 'string', 'max:8'],
+            'currency' => ['sometimes', 'string', 'in:XOF,USD,EUR'],
             'metadata' => ['sometimes', 'array'],
         ];
     }

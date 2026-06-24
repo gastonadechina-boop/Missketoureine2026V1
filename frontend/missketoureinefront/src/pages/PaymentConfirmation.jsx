@@ -69,7 +69,7 @@ const PaymentConfirmation = () => {
   const [paymentState, setPaymentState] = useState(() => (
     queryStatus === 'success' ? 'success' : (queryStatus === 'failed' ? 'failed' : 'processing')
   ));
-  const [message, setMessage] = useState('Nous vérifions la confirmation du paiement auprès du serveur sécurisé.');
+  const [message, setMessage] = useState('Vérification de la confirmation FedaPay…');
   const [candidateTotalVotes, setCandidateTotalVotes] = useState(null);
   const [isSyncing, setIsSyncing] = useState(SYNCABLE_STATES.has(queryStatus) && reference !== '');
   const { refreshPublicBootstrap } = useOutletContext() || {};
@@ -78,7 +78,6 @@ const PaymentConfirmation = () => {
   const quantity = paymentDetails.quantity;
   const currency = paymentDetails.currency;
   const formattedAmount = formatAmountLabel(amount, currency);
-  const narrativeAmount = amount > 0 ? formattedAmount : 'un montant en attente de confirmation';
   const candidateLink = paymentDetails.candidatePublicId
     ? getCandidatePublicPath({ public_uid: paymentDetails.candidatePublicId })
     : '/candidates';
@@ -87,10 +86,10 @@ const PaymentConfirmation = () => {
     if (paymentState === 'success') {
       return {
         tone: 'success',
-        label: 'Confirmation officielle',
+        label: 'Vote confirmé',
         body: candidateTotalVotes !== null
-          ? `Félicitations, votre vote a été enregistré avec succès. Grâce à votre participation, la candidate ${candidateName} totalise désormais ${candidateTotalVotes.toLocaleString('fr-FR')} votes. Au nom de la candidate et de toute l’équipe de Miss Kétou LA REINE, nous vous remercions pour votre engagement et votre soutien.`
-          : `Félicitations, votre vote a été enregistré avec succès. Le compteur de la candidate ${candidateName} est en cours d’actualisation. Au nom de la candidate et de toute l’équipe de Miss Kétou LA REINE, nous vous remercions pour votre engagement et votre soutien.`,
+          ? `Votre vote pour ${candidateName} a été enregistré (${candidateTotalVotes.toLocaleString('fr-FR')} votes au total). Merci pour votre soutien.`
+          : `Votre vote pour ${candidateName} a été enregistré. Merci pour votre soutien.`,
       };
     }
 
@@ -98,7 +97,7 @@ const PaymentConfirmation = () => {
       return {
         tone: 'failed',
         label: 'Vote annulé',
-        body: `Nous vous informons que votre tentative de vote en faveur de la candidate ${candidateName}, portant sur ${formatVoteLabel(quantity)} pour un montant de ${narrativeAmount}, a été annulée en raison de l’absence de confirmation du paiement. Nous vous invitons à reprendre l’opération et finaliser votre paiement.`,
+        body: `Tentative de vote pour ${candidateName} (${formatVoteLabel(quantity)}) annulée : paiement non confirmé.`,
       };
     }
 
@@ -107,32 +106,32 @@ const PaymentConfirmation = () => {
       label: 'Suivi automatique',
       body: message,
     };
-  }, [candidateName, candidateTotalVotes, message, narrativeAmount, paymentState, quantity]);
+  }, [candidateName, candidateTotalVotes, message, paymentState, quantity]);
 
   const stateCopy = useMemo(() => {
     if (paymentState === 'success') {
       return {
         eyebrow: 'Paiement confirmé',
         title: 'Votre vote a bien été validé',
-        subtitle: `Le paiement sécurisé a été confirmé et votre soutien en faveur de ${candidateName} est désormais pris en compte.`,
-        detail: 'Le tableau de la candidate est actualisé automatiquement afin de refléter votre participation.',
+        subtitle: `Vote en faveur de ${candidateName} enregistré avec succès.`,
+        detail: 'Le compteur de la candidate est mis à jour automatiquement.',
       };
     }
 
     if (paymentState === 'failed') {
       return {
         eyebrow: 'Paiement non confirmé',
-        title: 'Le vote n’a pas été comptabilisé',
-        subtitle: 'La plateforme n’a reçu aucune confirmation de paiement. Le scrutin reste donc inchangé.',
-        detail: 'Vous pouvez relancer l’opération en toute sécurité dès que vous le souhaitez.',
+        title: 'Vote non comptabilisé',
+        subtitle: 'Aucune confirmation de paiement reçue.',
+        detail: 'Vous pouvez relancer l’opération à tout moment.',
       };
     }
 
     return {
       eyebrow: 'Confirmation en cours',
-      title: 'Vérification du paiement sécurisé',
-      subtitle: 'FedaPay a pris en charge le règlement. Nous attendons maintenant la confirmation finale côté serveur avant de valider le vote.',
-      detail: 'Cette page se met à jour automatiquement. Gardez-la ouverte quelques instants.',
+      title: 'Vérification du paiement',
+      subtitle: 'Attente de la confirmation FedaPay côté serveur.',
+      detail: 'Mise à jour automatique de la page.',
     };
   }, [candidateName, paymentState]);
 
@@ -191,7 +190,7 @@ const PaymentConfirmation = () => {
           if (nextTotalVotes !== null) {
             setCandidateTotalVotes(nextTotalVotes);
           }
-          setMessage('Votre paiement a été confirmé. Nous finalisons l’actualisation du compteur de la candidate.');
+          setMessage('Paiement confirmé. Mise à jour du compteur…');
           broadcastLiveUpdate('votes');
           try {
             await refreshPublicBootstrap?.();
@@ -205,7 +204,7 @@ const PaymentConfirmation = () => {
 
         if (nextState === 'failed') {
           setPaymentState('failed');
-          setMessage('Le paiement n’a pas pu être confirmé. Aucun vote n’a été comptabilisé.');
+          setMessage('Paiement non confirmé. Aucun vote comptabilisé.');
           broadcastLiveUpdate('votes');
           setIsSyncing(false);
           stopPolling();
@@ -213,13 +212,13 @@ const PaymentConfirmation = () => {
         }
 
         setPaymentState('processing');
-        setMessage('Le paiement est en cours de confirmation. Nous mettons cette page à jour automatiquement.');
+        setMessage('Confirmation en cours. Mise à jour automatique…');
 
         if (attempts < 12) {
           scheduleNext();
         } else {
           setIsSyncing(false);
-          setMessage('La transaction est encore en attente côté serveur. Actualisez cette page dans quelques instants si nécessaire.');
+          setMessage('Transaction en attente côté serveur.');
         }
       } catch (error) {
         if (cancelled) {
@@ -228,12 +227,12 @@ const PaymentConfirmation = () => {
 
         if (attempts < 12) {
           setPaymentState('processing');
-          setMessage('Le paiement est peut-être déjà en cours de confirmation. Nouvelle vérification automatique...');
+          setMessage('Nouvelle vérification automatique…');
           scheduleNext();
         } else {
           setIsSyncing(false);
           setPaymentState('processing');
-          setMessage(error?.message || 'Impossible de vérifier la transaction pour le moment.');
+          setMessage(error?.message || 'Vérification impossible pour le moment.');
         }
       }
     };
@@ -327,15 +326,11 @@ const PaymentConfirmation = () => {
             </div>
 
             {paymentState === 'success' ? (
-              <div className="payment-confirmation-note">
-                Chaque vote confirme votre soutien et renforce les chances de victoire de votre candidate.
-              </div>
+              <div className="payment-confirmation-note">Vote confirmé. Merci pour votre soutien.</div>
             ) : null}
 
             {paymentState === 'processing' && isSyncing ? (
-              <div className="payment-confirmation-note">
-                Confirmation automatique en cours...
-              </div>
+              <div className="payment-confirmation-note">Confirmation automatique en cours…</div>
             ) : null}
           </motion.div>
         </div>

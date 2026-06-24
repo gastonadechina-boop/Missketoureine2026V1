@@ -10,9 +10,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ResultController extends Controller
 {
-    public function __construct(private ResultService $results)
-    {
-    }
+    public function __construct(private ResultService $results) {}
 
     /**
      * Display a listing of the resource.
@@ -35,7 +33,42 @@ class ResultController extends Controller
     {
         $this->authorize('create', Result::class);
         $this->results->calculateAndPersist();
+
         return response()->json(['message' => 'Results calculated']);
+    }
+
+    public function publicIndex(): JsonResponse
+    {
+        $resultsPublic = \App\Models\Setting::where('key', 'results_public')->value('value');
+        if ($resultsPublic !== '1' && $resultsPublic !== 'true') {
+            return response()->json(['message' => 'Results are not public yet'], 403);
+        }
+
+        $results = Result::with(['candidate.category', 'category'])
+            ->orderByRaw('CASE WHEN category_id IS NULL THEN 1 ELSE 0 END')
+            ->orderBy('category_id')
+            ->orderByDesc('total_votes')
+            ->get();
+
+        return response()->json(['data' => $results]);
+    }
+
+    public function ranking(): JsonResponse
+    {
+        $resultsPublic = \App\Models\Setting::where('key', 'results_public')->value('value');
+        if ($resultsPublic !== '1' && $resultsPublic !== 'true') {
+            return response()->json(['message' => 'Results are not public yet'], 403);
+        }
+
+        $category = trim((string) request()->query('category', ''));
+        $query = Result::with(['candidate.category', 'category'])
+            ->orderByDesc('total_votes');
+
+        if ($category !== '') {
+            $query->whereHas('category', fn ($q) => $q->where('name', $category));
+        }
+
+        return response()->json(['data' => $query->get()]);
     }
 
     /**
@@ -67,7 +100,7 @@ class ResultController extends Controller
             foreach ($rows as $row) {
                 fputcsv($output, [
                     $row->category?->name ?? $row->candidate?->category?->name,
-                    optional($row->candidate)->first_name . ' ' . optional($row->candidate)->last_name,
+                    optional($row->candidate)->first_name.' '.optional($row->candidate)->last_name,
                     $row->total_votes,
                     $row->total_amount,
                 ]);

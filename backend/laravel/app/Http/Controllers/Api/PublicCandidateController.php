@@ -15,9 +15,7 @@ class PublicCandidateController extends Controller
         private CandidateRepository $candidates,
         private PaymentService $payments,
         private PublicApiPayloadService $publicApi,
-    )
-    {
-    }
+    ) {}
 
     public function index(): JsonResponse
     {
@@ -33,21 +31,35 @@ class PublicCandidateController extends Controller
     public function show(string $identifier): JsonResponse
     {
         $this->payments->scheduleWarmPaymentStateForReadModels();
-        $payload = cache()->remember($this->publicApi->versionedCacheKey('candidates:show:' . md5($identifier)), now()->addSeconds(60), function () use ($identifier) {
+        $payload = cache()->remember($this->publicApi->versionedCacheKey('candidates:show:'.md5($identifier)), now()->addSeconds(60), function () use ($identifier) {
             $candidate = $this->candidates->findActiveByIdentifier($identifier);
 
-            if (!$candidate) {
+            if (! $candidate) {
                 return null;
             }
 
             return $this->presentDetailCandidate($candidate);
         });
 
-        if (!$payload) {
+        if (! $payload) {
             return response()->json(['message' => 'Candidate not found'], 404);
         }
 
         return response()->json($payload);
+    }
+
+    public function search(): JsonResponse
+    {
+        $query = trim((string) request()->query('q', ''));
+        if ($query === '') {
+            return response()->json(['data' => []]);
+        }
+
+        $candidates = $this->candidates->searchPublic($query);
+
+        return response()->json([
+            'data' => $candidates->map(fn (Candidate $candidate) => $this->presentListCandidate($candidate))->values()->all(),
+        ]);
     }
 
     private function presentListCandidate(Candidate $candidate): array

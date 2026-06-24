@@ -56,6 +56,11 @@ return [
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:5173'),
 
+    'pdf' => [
+        'memory_limit' => env('PDF_MEMORY_LIMIT', '512M'),
+        'max_execution_time' => env('PDF_MAX_EXECUTION_TIME', '120'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

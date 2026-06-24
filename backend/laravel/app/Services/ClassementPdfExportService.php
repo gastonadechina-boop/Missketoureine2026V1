@@ -341,8 +341,8 @@ class ClassementPdfExportService
     private function withPdfRuntimeTuning(callable $callback)
     {
         $targets = [
-            'memory_limit' => env('PDF_MEMORY_LIMIT', '512M'),
-            'max_execution_time' => (string) env('PDF_MAX_EXECUTION_TIME', '120'),
+            'memory_limit' => config('app.pdf.memory_limit', '512M'),
+            'max_execution_time' => (string) config('app.pdf.max_execution_time', '120'),
         ];
 
         $originals = [];

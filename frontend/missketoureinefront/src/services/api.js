@@ -1130,6 +1130,20 @@ export const authAPI = {
     throw lastError || new Error('Impossible de contacter le serveur pour le moment. Reessayez dans quelques secondes.');
   },
 
+  forgotPassword: async (data) => {
+    return fetchAPI('/auth/forgot-password', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  resetPassword: async (data) => {
+    return fetchAPI('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
   resolveSession: async (payload, scope = 'user') => {
     return resolveAuthSessionFromPayload(payload, scope);
   },
@@ -1217,7 +1231,7 @@ export const candidatesAPI = {
 
   // Rechercher des candidats
   search: async (query) => {
-    return fetchAPI(`/candidates/search?q=${encodeURIComponent(query)}`);
+    return fetchPublicAPI(`/public/candidates/search?q=${encodeURIComponent(query)}`);
   },
 
   // Statistiques publiques
@@ -1266,13 +1280,13 @@ export const votesAPI = {
   },
 
   // Vérifier si l'utilisateur peut voter
-  canVote: async (candidateId) => {
-    return fetchAPI(`/votes/can-vote/${candidateId}`);
+  canVote: async () => {
+    return { allowed: true };
   },
 
   // Statistiques de votes
   getStats: async () => {
-    return fetchAPI('/votes/stats');
+    return fetchPublicAPI('/public/stats');
   },
 };
 
@@ -1280,12 +1294,12 @@ export const votesAPI = {
 export const resultsAPI = {
   // Récupérer les résultats
   getResults: async () => {
-    return fetchAPI('/results');
+    return fetchPublicAPI('/public/results');
   },
 
   // Récupérer le classement
   getRanking: async (category = null) => {
-    return fetchAPI(`/results/ranking${category ? `?category=${category}` : ''}`);
+    return fetchPublicAPI(`/public/results/ranking${category ? `?category=${category}` : ''}`);
   },
 };
 
@@ -1325,7 +1339,7 @@ export const contactAPI = {
 export const faqAPI = {
   // Récupérer toutes les FAQs
   getAll: async () => {
-    return fetchAPI('/faq');
+    return fetchPublicAPI('/public/faq');
   },
 };
 
@@ -1333,20 +1347,23 @@ export const faqAPI = {
 export const paymentAPI = {
   // Initier un paiement Mobile Money
   initiate: async (paymentData) => {
-    return fetchAPI('/payment/initiate', {
+    return fetchAPI('/votes', {
       method: 'POST',
       body: JSON.stringify(paymentData),
+      timeout: 45000,
     });
   },
 
   // Vérifier le statut d'un paiement
   checkStatus: async (transactionId) => {
-    return fetchAPI(`/payment/status/${transactionId}`);
+    return fetchPublicAPI(`/payments/${encodeURIComponent(transactionId)}/sync`, {
+      timeout: 30000,
+    });
   },
 
   // Historique des paiements
   getHistory: async () => {
-    return fetchAPI('/payment/history');
+    return fetchAPI('/votes/history');
   },
 
   // Synchroniser publiquement un paiement FedaPay a partir de sa reference

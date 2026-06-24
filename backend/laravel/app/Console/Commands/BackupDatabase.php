@@ -3,57 +3,44 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Process\Process;
 
 class BackupDatabase extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'backup:database';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Dump the database to storage/backups';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
+    public function handle(): int
     {
-        $db = config('database.connections.' . config('database.default'));
+        $db = config('database.connections.'.config('database.default'));
         $database = $db['database'] ?? 'database';
-        $filename = 'backups/' . $database . '_' . now()->format('Ymd_His') . '.sql';
-
-        $dsn = sprintf(
-            'mysql:host=%s;port=%s;dbname=%s',
-            $db['host'] ?? '127.0.0.1',
-            $db['port'] ?? 3306,
-            $database
-        );
+        $filename = 'backups/'.$database.'_'.now()->format('Ymd_His').'.sql';
 
         $command = sprintf(
-            'mysqldump -h%s -P%s -u%s %s %s',
+            'mysqldump -h%s -P%s -u%s %s',
             escapeshellarg($db['host'] ?? '127.0.0.1'),
             escapeshellarg($db['port'] ?? 3306),
             escapeshellarg($db['username'] ?? 'root'),
-            $db['password'] ? '-p' . escapeshellarg($db['password']) : '',
             escapeshellarg($database)
         );
 
-        $output = shell_exec($command);
+        $process = new Process(
+            command: explode(' ', $command),
+            env: ['MYSQL_PWD' => $db['password'] ?? ''],
+        );
+        $process->run();
 
-        if (!$output) {
-            $this->error('mysqldump not available; writing placeholder backup file instead.');
-            $output = '-- backup placeholder generated at ' . now();
+        if (! $process->isSuccessful()) {
+            $this->error('mysqldump command failed: '.$process->getErrorOutput());
+
+            return 1;
         }
 
-        \Storage::disk('local')->put($filename, $output);
+        \Storage::disk('local')->put($filename, $process->getOutput());
 
         $this->info("Backup stored at storage/app/{$filename}");
+
+        return 0;
     }
 }

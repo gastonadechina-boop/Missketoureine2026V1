@@ -165,7 +165,7 @@ const AdminLayout = ({ children }) => {
         id="admin-sidebar"
         ref={sidebarRef}
         className={`admin-sidebar ${sidebarExpanded ? 'open' : 'collapsed'} ${isMobileViewport ? 'mobile' : 'desktop'} ${mobileSidebarOpen ? 'mobile-open' : ''}`}
-        inert={isMobileViewport && !mobileSidebarOpen ? '' : undefined}
+        inert={isMobileViewport && !mobileSidebarOpen ? true : undefined}
       >
         <div className="sidebar-header">
           <div className="sidebar-logo">

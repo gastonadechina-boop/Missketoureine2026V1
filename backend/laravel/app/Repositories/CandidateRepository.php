@@ -4,8 +4,8 @@ namespace App\Repositories;
 
 use App\Models\Candidate;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class CandidateRepository
 {
@@ -102,7 +102,7 @@ class CandidateRepository
     {
         $targetVotes = (int) ($candidate->votes_count ?? 0);
 
-        if (!$candidate->category_id || $targetVotes <= 0) {
+        if (! $candidate->category_id || $targetVotes <= 0) {
             return null;
         }
 
@@ -136,8 +136,8 @@ class CandidateRepository
                 }
 
                 return strcasecmp(
-                    trim(($left->last_name ?? '') . ' ' . ($left->first_name ?? '')),
-                    trim(($right->last_name ?? '') . ' ' . ($right->first_name ?? ''))
+                    trim(($left->last_name ?? '').' '.($left->first_name ?? '')),
+                    trim(($right->last_name ?? '').' '.($right->first_name ?? ''))
                 );
             })
             ->pluck('id')
@@ -150,15 +150,17 @@ class CandidateRepository
 
     public function create(array $data): Candidate
     {
-        if (!isset($data['public_number'])) {
+        if (! isset($data['public_number'])) {
             $data['public_number'] = $this->nextPublicNumberForCategory((int) $data['category_id']);
         }
+
         return Candidate::create($data);
     }
 
     public function update(Candidate $candidate, array $data): Candidate
     {
         $candidate->update($data);
+
         return $candidate;
     }
 
@@ -166,6 +168,45 @@ class CandidateRepository
     {
         $candidate->update(['status' => 'inactive', 'is_active' => false]);
         $candidate->delete();
+    }
+
+    public function searchPublic(string $query, int $limit = 20): Collection
+    {
+        $like = '%'.$query.'%';
+
+        return $this->publicBaseQuery()
+            ->select([
+                'id',
+                'category_id',
+                'first_name',
+                'last_name',
+                'public_number',
+                'public_uid',
+                'slug',
+                'university',
+                'photo_path',
+                'photo_variants',
+            ])
+            ->withSum(['votes as votes_count' => function ($q) {
+                $q->successful();
+            }], 'quantity')
+            ->where(function (Builder $q) use ($like, $query) {
+                $q->where('first_name', 'like', $like)
+                    ->orWhere('last_name', 'like', $like)
+                    ->orWhereRaw("CONCAT(COALESCE(first_name, ''), ' ', COALESCE(last_name, '')) like ?", [$like])
+                    ->orWhere('university', 'like', $like)
+                    ->orWhere('city', 'like', $like);
+
+                if (ctype_digit($query)) {
+                    $q->orWhere('public_number', (int) $query);
+                }
+            })
+            ->orderByRaw('CASE WHEN public_number IS NULL THEN 1 ELSE 0 END')
+            ->orderBy('public_number')
+            ->orderBy('last_name')
+            ->orderBy('first_name')
+            ->limit($limit)
+            ->get();
     }
 
     private function publicBaseQuery(): Builder
@@ -216,7 +257,7 @@ class CandidateRepository
             })
             ->when(filled($search), function (Builder $query) use ($search) {
                 $normalizedSearch = trim((string) $search);
-                $like = '%' . $normalizedSearch . '%';
+                $like = '%'.$normalizedSearch.'%';
 
                 $query->where(function (Builder $searchQuery) use ($like, $normalizedSearch) {
                     $searchQuery

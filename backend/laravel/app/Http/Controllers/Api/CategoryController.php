@@ -13,8 +13,7 @@ class CategoryController extends Controller
 {
     public function __construct(
         private PublicApiPayloadService $publicApi,
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -30,7 +29,7 @@ class CategoryController extends Controller
     public function store()
     {
         abort_unless(request()->user()?->tokenCan('admin'), 403);
-        $data = Validator::make(request()->all(), [
+        $data = Validator::make(request()->only(['name', 'description', 'status', 'position']), [
             'name' => ['required', 'string', 'max:120', 'unique:categories,name'],
             'description' => ['nullable', 'string'],
             'status' => ['nullable', 'in:active,inactive'],
@@ -59,8 +58,8 @@ class CategoryController extends Controller
     public function update(Category $category)
     {
         abort_unless(request()->user()?->tokenCan('admin'), 403);
-        $data = Validator::make(request()->all(), [
-            'name' => ['sometimes', 'string', 'max:120', 'unique:categories,name,' . $category->id],
+        $data = Validator::make(request()->only(['name', 'description', 'status', 'position']), [
+            'name' => ['sometimes', 'string', 'max:120', 'unique:categories,name,'.$category->id],
             'description' => ['sometimes', 'nullable', 'string'],
             'status' => ['sometimes', 'in:active,inactive'],
             'position' => ['sometimes', 'integer'],
@@ -84,6 +83,7 @@ class CategoryController extends Controller
         abort_unless((request()->user()?->role ?? null) === 'superadmin', 403);
         $category->delete();
         $this->publicApi->invalidatePublicData();
+
         return response()->json(['message' => 'Category deleted']);
     }
 }

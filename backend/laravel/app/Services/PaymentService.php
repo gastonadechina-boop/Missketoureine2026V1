@@ -155,6 +155,16 @@ class PaymentService
         }
 
         return DB::transaction(function () use ($payment, $payload) {
+            $payment = Payment::query()->lockForUpdate()->find($payment->id);
+
+            if (! $payment) {
+                return null;
+            }
+
+            if ($payment->status === 'succeeded') {
+                return $this->reconcileSuccessfulPayment($payment, $payload);
+            }
+
             $transactionReference = $this->extractTransactionReference($payload) ?? $payment->transaction_id;
 
             if ($transactionReference && ! $payment->transaction_id) {
@@ -192,34 +202,36 @@ class PaymentService
 
     public function reconcileSuccessfulAssociations(int $limit = 250): void
     {
-        Payment::query()
-            ->with(['vote', 'user'])
-            ->where('status', Payment::STATUS_SUCCEEDED)
-            ->where(function ($query) {
-                $query
-                    ->whereNull('user_id')
-                    ->orDoesntHave('vote')
-                    ->orWhereHas('vote', function ($voteQuery) {
-                        $voteQuery
-                            ->whereNull('user_id')
-                            ->orWhereNull('ip_address')
-                            ->orWhere('status', '!=', Vote::STATUS_CONFIRMED);
-                    });
-            })
-            ->orderBy('id')
-            ->limit($limit)
-            ->get()
-            ->each(function (Payment $payment): void {
-                try {
-                    $this->reconcileSuccessfulPayment($payment);
-                } catch (\Throwable $exception) {
-                    logger()->warning('Failed to reconcile successful payment associations', [
-                        'payment_id' => $payment->id,
-                        'reference' => $payment->reference,
-                        'error' => $exception->getMessage(),
-                    ]);
-                }
-            });
+        DB::transaction(function () use ($limit): void {
+            Payment::query()
+                ->with(['vote', 'user'])
+                ->where('status', Payment::STATUS_SUCCEEDED)
+                ->where(function ($query) {
+                    $query
+                        ->whereNull('user_id')
+                        ->orDoesntHave('vote')
+                        ->orWhereHas('vote', function ($voteQuery) {
+                            $voteQuery
+                                ->whereNull('user_id')
+                                ->orWhereNull('ip_address')
+                                ->orWhere('status', '!=', Vote::STATUS_CONFIRMED);
+                        });
+                })
+                ->orderBy('id')
+                ->limit($limit)
+                ->get()
+                ->each(function (Payment $payment): void {
+                    try {
+                        $this->reconcileSuccessfulPayment($payment);
+                    } catch (\Throwable $exception) {
+                        logger()->warning('Failed to reconcile successful payment associations', [
+                            'payment_id' => $payment->id,
+                            'reference' => $payment->reference,
+                            'error' => $exception->getMessage(),
+                        ]);
+                    }
+                });
+        });
     }
 
     public function warmPaymentStateForReadModels(

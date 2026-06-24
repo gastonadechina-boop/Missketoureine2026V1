@@ -193,6 +193,7 @@ const AdminVotes = () => {
   const [dateTo, setDateTo] = useState('');
   const [minAmount, setMinAmount] = useState('');
   const [sortBy, setSortBy] = useState('date_desc');
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [loading, setLoading] = useState(true);
   const [exportLoading, setExportLoading] = useState(false);
   const [csvExportLoading, setCsvExportLoading] = useState(false);
@@ -598,37 +599,74 @@ const AdminVotes = () => {
           </svg>
           <input className="ag-input avotes-search" placeholder="Rechercher par ID, candidat, votant…" value={search} onChange={e => setSearch(e.target.value)} />
         </div>
-        <select className="ag-input ag-select avotes-select" value={statusFilter} onChange={e => setStatus(e.target.value)}>
-          <option>Tous</option>
-          <option value="confirmed">Valides</option>
-          <option value="pending">En attente</option>
-          <option value="suspect">Suspects</option>
-          <option value="failed">Échoués</option>
-          <option value="cancelled">Annulés</option>
-        </select>
-        <select className="ag-input ag-select avotes-select" value={catFilter} onChange={e => setCat(e.target.value)}>
-          <option>Tous</option>
-          <option>Miss</option>
-        </select>
-        <select className="ag-input ag-select avotes-select" value={operatorFilter} onChange={e => setOperator(e.target.value)}>
-          <option>Tous</option>
-          <option value="fedapay">FedaPay</option>
-          <option value="kkiapay">Kkiapay</option>
-          <option>MTN</option>
-          <option>Moov</option>
-          <option>Flooz</option>
-        </select>
-        <input type="date" className="ag-input avotes-select" value={dateFrom} onChange={e => setDateFrom(e.target.value)} title="Du" />
-        <input type="date" className="ag-input avotes-select" value={dateTo} onChange={e => setDateTo(e.target.value)} title="Au" />
-        <input type="number" className="ag-input avotes-select" placeholder="Montant min" value={minAmount} onChange={e => setMinAmount(e.target.value)} min={0} />
-        <select className="ag-input ag-select avotes-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-          <option value="date_desc">Date ↓</option>
-          <option value="date_asc">Date ↑</option>
-          <option value="amount_desc">Montant ↓</option>
-          <option value="amount_asc">Montant ↑</option>
-          <option value="qty_desc">Votes ↓</option>
-          <option value="qty_asc">Votes ↑</option>
-        </select>
+
+        <div className="avotes-filter-group">
+          <span className="avotes-filter-label">Statut</span>
+          <select className="ag-input ag-select avotes-select" value={statusFilter} onChange={e => setStatus(e.target.value)}>
+            <option>Tous</option>
+            <option value="confirmed">Valides</option>
+            <option value="pending">En attente</option>
+            <option value="suspect">Suspects</option>
+            <option value="failed">Échoués</option>
+            <option value="cancelled">Annulés</option>
+          </select>
+        </div>
+
+        <div className={`avotes-filters-advanced ${showAdvanced ? 'open' : 'closed'}`}>
+          <div className="avotes-filter-group">
+            <span className="avotes-filter-label">Catégorie</span>
+            <select className="ag-input ag-select avotes-select" value={catFilter} onChange={e => setCat(e.target.value)}>
+              <option>Tous</option>
+              <option>Miss</option>
+            </select>
+          </div>
+
+          <div className="avotes-filter-group">
+            <span className="avotes-filter-label">Opérateur</span>
+            <select className="ag-input ag-select avotes-select" value={operatorFilter} onChange={e => setOperator(e.target.value)}>
+              <option>Tous</option>
+              <option value="fedapay">FedaPay</option>
+              <option value="kkiapay">Kkiapay</option>
+              <option value="MTN">MTN</option>
+              <option value="Moov">Moov</option>
+              <option value="Flooz">Flooz</option>
+            </select>
+          </div>
+
+          <div className="avotes-filter-group">
+            <span className="avotes-filter-label">Du</span>
+            <input type="date" className="ag-input avotes-select" value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
+          </div>
+
+          <div className="avotes-filter-group">
+            <span className="avotes-filter-label">Au</span>
+            <input type="date" className="ag-input avotes-select" value={dateTo} onChange={e => setDateTo(e.target.value)} />
+          </div>
+        </div>
+
+        <div className="avotes-filter-group">
+          <span className="avotes-filter-label">Montant min</span>
+          <input type="number" className="ag-input avotes-select" placeholder="0" value={minAmount} onChange={e => setMinAmount(e.target.value)} min={0} />
+        </div>
+
+        <div className="avotes-filter-group">
+          <span className="avotes-filter-label">Trier par</span>
+          <select className="ag-input ag-select avotes-select" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+            <option value="date_desc">Date ↓</option>
+            <option value="date_asc">Date ↑</option>
+            <option value="amount_desc">Montant ↓</option>
+            <option value="amount_asc">Montant ↑</option>
+            <option value="qty_desc">Votes ↓</option>
+            <option value="qty_asc">Votes ↑</option>
+          </select>
+        </div>
+
+        <button className="avotes-filters-toggle ag-btn ag-btn-ghost" onClick={() => setShowAdvanced(v => !v)} title="Filtres avancés">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ transform: showAdvanced ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
+            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span>Filtres</span>
+        </button>
       </div>
 
       <div className="avotes-bulk">

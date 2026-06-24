@@ -157,7 +157,7 @@ const Login = () => {
               <div className={`lf-group ${errors.password ? 'has-error' : ''}`}>
                 <div className="lf-label-row">
                   <label htmlFor="login-pwd">Mot de passe</label>
-                  <Link to="/register" className="lf-forgot">Créer un compte</Link>
+                  <Link to="/forgot-password" className="lf-forgot">Mot de passe oublié</Link>
                 </div>
                 <div className="lf-input-wrap">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="lf-icon">

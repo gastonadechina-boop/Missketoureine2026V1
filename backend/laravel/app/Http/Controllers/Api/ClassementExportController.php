@@ -12,16 +12,14 @@ class ClassementExportController extends Controller
 {
     public function __construct(
         private ClassementPdfExportService $classementExports,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Request $request): BinaryFileResponse|JsonResponse
     {
         $export = null;
 
-        logger()->info('Classement PDF export controller entered', [
+        logger()->debug('Classement PDF export controller entered', [
             'route' => $request->path(),
-            ...$this->buildAuthLogContext($request),
         ]);
 
         if ($authFailure = $this->ensureAdminAccess($request)) {
@@ -76,10 +74,9 @@ class ClassementExportController extends Controller
         $export = null;
         $category = trim((string) $request->query('category', 'Miss'));
 
-        logger()->info('Classement PDF isolated test controller entered', [
+        logger()->debug('Classement PDF isolated test controller entered', [
             'route' => $request->path(),
             'category' => $category,
-            ...$this->buildAuthLogContext($request),
         ]);
 
         if ($authFailure = $this->ensureAdminAccess($request)) {
@@ -134,7 +131,7 @@ class ClassementExportController extends Controller
     {
         $user = $request->user();
 
-        if (!$user) {
+        if (! $user) {
             logger()->warning('Classement PDF access rejected', [
                 'reason' => 'unauthenticated',
                 'route' => $request->path(),
@@ -148,7 +145,7 @@ class ClassementExportController extends Controller
 
         $role = strtolower(trim((string) ($user->role ?? '')));
         $allowedRoles = ['admin', 'superadmin'];
-        if (!in_array($role, $allowedRoles, true)) {
+        if (! in_array($role, $allowedRoles, true)) {
             logger()->warning('Classement PDF access rejected', [
                 'reason' => 'role_not_allowed',
                 'route' => $request->path(),
@@ -161,7 +158,7 @@ class ClassementExportController extends Controller
         }
 
         $tokenAbilities = $this->tokenAbilitiesFor($user);
-        if ($tokenAbilities !== [] && !$this->tokenAllowsAdmin($user)) {
+        if ($tokenAbilities !== [] && ! $this->tokenAllowsAdmin($user)) {
             logger()->warning('Classement PDF access rejected', [
                 'reason' => 'token_ability_missing',
                 'route' => $request->path(),
@@ -179,22 +176,12 @@ class ClassementExportController extends Controller
     private function buildAuthLogContext(Request $request): array
     {
         $user = $request->user();
-        $authorizationHeader = trim((string) $request->headers->get('Authorization', ''));
-        $sessionCookieName = trim((string) config('session.cookie', ''));
 
         return [
             'user_id' => $user?->id,
             'user_type' => $user ? get_class($user) : null,
             'role' => $user?->role,
-            'has_authorization_header' => $authorizationHeader !== '',
-            'authorization_scheme' => $authorizationHeader !== '' ? strtok($authorizationHeader, ' ') : null,
-            'bearer_token_present' => filled($request->bearerToken()),
-            'session_cookie_present' => $sessionCookieName !== '' && $request->cookies->has($sessionCookieName),
-            'xsrf_cookie_present' => $request->cookies->has('XSRF-TOKEN'),
             'token_abilities' => $this->tokenAbilitiesFor($user),
-            'origin' => $request->headers->get('Origin'),
-            'referer' => $request->headers->get('Referer'),
-            'sanctum_guard_config' => config('sanctum.guard'),
         ];
     }
 

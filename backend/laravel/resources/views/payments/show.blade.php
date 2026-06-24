@@ -403,11 +403,8 @@
             </div>
         </div>
 
-        <h1>Paiement sécurisé FedaPay</h1>
-        <p class="lead">
-            La transaction est créée par le serveur avec une référence unique, puis confirmée uniquement après un retour
-            FedaPay signé. Aucun vote n’est validé sans paiement réussi, et l’admin conserve le dernier mot sur les cas suspects.
-        </p>
+        <h1>Paiement sécurisé</h1>
+        <p class="lead">Transaction vérifiée côté serveur — vote confirmé après approbation.</p>
 
         <section class="grid" aria-label="Informations de paiement">
             <article class="meta-card">
@@ -427,11 +424,8 @@
         @if (!$fedapayConfigured || !$fedapayPublicKey || !$payment->transaction_id)
             <section class="panel status" data-state="failed">
                 <div class="spinner" aria-hidden="true"></div>
-                <p class="status-title">Configuration FedaPay indisponible</p>
-                <p class="status-text">
-                    La clé publique, la clé secrète ou l’identifiant de transaction n’est pas encore disponible.
-                    Le paiement ne peut pas démarrer tant que la configuration sécurisée n’est pas complète.
-                </p>
+                <p class="status-title">Configuration manquante</p>
+                <p class="status-text">Clés API ou identifiant de transaction introuvables.</p>
                 <div class="actions">
                     <a class="link" href="{{ $candidateLink }}">Retour au candidat</a>
                 </div>
@@ -441,20 +435,20 @@
                 <div class="spinner" aria-hidden="true"></div>
                 <p class="status-title" data-status-title>
                     @if($payment->status === 'succeeded' && ($payment->vote?->status === \App\Models\Vote::STATUS_CONFIRMED))
-                        Paiement accepté avec succès
+                        Paiement accepté
                     @elseif($payment->status === 'failed' || $payment->vote?->status === 'failed')
-                        Paiement refusé ou interrompu
+                        Paiement refusé
                     @else
-                        Ouverture du paiement sécurisé...
+                        Paiement sécurisé en cours…
                     @endif
                 </p>
                 <p class="status-text" data-status-text>
                     @if($payment->status === 'succeeded' && ($payment->vote?->status === \App\Models\Vote::STATUS_CONFIRMED))
-                        Merci pour votre soutien. Votre vote est maintenant enregistré et comptabilisé après confirmation du serveur.
+                        Vote enregistré et confirmé. Merci pour votre soutien.
                     @elseif($payment->status === 'failed' || $payment->vote?->status === 'failed')
-                        Le paiement n’a pas abouti. Aucun vote n’a été comptabilisé.
+                        Aucun vote comptabilisé.
                     @else
-                        Gardez cette fenêtre ouverte. Le widget FedaPay va s’ouvrir pour finaliser le vote de manière sécurisée.
+                        Le widget FedaPay s'ouvre pour finaliser le paiement.
                     @endif
                 </p>
 
@@ -492,9 +486,7 @@
             </section>
         @endif
 
-        <p class="footnote">
-            Référence transaction : <strong>{{ $payment->transaction_id ?? '—' }}</strong>
-        </p>
+        <p class="footnote">Ref transaction : <strong>{{ $payment->transaction_id ?? '—' }}</strong></p>
     </main>
 
     <script>
@@ -574,8 +566,8 @@
 
                 setState(
                     'success',
-                    'Paiement accepté avec succès',
-                    'Merci pour votre soutien. Le vote a été confirmé côté serveur et sera bien pris en compte dans les tableaux de bord.'
+                    'Paiement accepté',
+                    'Vote confirmé. Merci pour votre soutien.'
                 );
 
                 if (button) {
@@ -593,14 +585,14 @@
                 setState(
                     'failed',
                     'Paiement non finalisé',
-                    payload?.message || 'Le paiement a été interrompu ou refusé. Aucun vote n’a été comptabilisé.'
+                    payload?.message || 'Transaction interrompue. Aucun vote comptabilisé.'
                 );
 
                 initialized = false;
                 setButtonState(false, 'Payer');
             };
 
-            const markProcessing = (nextMessage = 'Le paiement a été transmis à FedaPay. Nous vérifions sa confirmation côté serveur...') => {
+            const markProcessing = (nextMessage = 'Vérification de la confirmation FedaPay en cours…') => {
                 updateUrlState('processing');
                 setState(
                     'opening',
@@ -611,7 +603,7 @@
             };
 
             const offerCheckoutRetry = (
-                nextMessage = 'Le paiement n’a pas encore été finalisé. Cliquez sur "Payer" pour ouvrir ou relancer FedaPay.'
+                nextMessage = 'Cliquez sur « Payer » pour relancer FedaPay.'
             ) => {
                 stopSyncLoop();
                 initialized = false;
@@ -670,7 +662,7 @@
 
                     if (paymentStatus === 'failed' || voteStatus === 'failed') {
                         stopSyncLoop();
-                        markFailed({ message: payload?.message || 'Le paiement a été refusé ou annulé. Aucun vote n’a été comptabilisé.' });
+                        markFailed({ message: payload?.message || 'Paiement refusé ou annulé.' });
                         return;
                     }
 
@@ -688,8 +680,8 @@
                         stopSyncLoop();
                         setState(
                             'opening',
-                            'Paiement en attente de confirmation',
-                            'La transaction est encore en cours de vérification. Laissez cette page ouverte quelques instants, la confirmation sera appliquée dès réception côté serveur.'
+                            'En attente de confirmation',
+                            'Vérification serveur en cours…'
                         );
                     }
                 } catch (error) {
@@ -697,7 +689,7 @@
 
                     if (syncAttempts >= 12) {
                         offerCheckoutRetry(
-                            'La vérification serveur prend trop de temps. Cliquez sur "Payer" pour relancer le widget FedaPay en toute sécurité.'
+                            'Délai dépassé. Cliquez sur « Payer » pour relancer.'
                         );
                     }
                 } finally {
@@ -721,7 +713,7 @@
                 }
 
                 if (!window.FedaPay || typeof window.FedaPay.init !== 'function') {
-                    markFailed({ message: 'Le module FedaPay n’a pas pu être chargé. Réessayez dans quelques secondes.' });
+                    markFailed({ message: 'Module FedaPay indisponible.' });
                     return;
                 }
 
@@ -758,12 +750,12 @@
                             }
 
                             if (reason === window.FedaPay.DIALOG_DISMISSED) {
-                                markFailed({ message: 'La fenêtre de paiement a été fermée avant la validation finale.' });
+                                markFailed({ message: 'Fenêtre de paiement fermée.' });
                                 return;
                             }
 
                             if (transactionStatus === 'canceled' || transactionStatus === 'cancelled' || transactionStatus === 'declined' || transactionStatus === 'failed') {
-                                markFailed({ message: 'Le paiement a été refusé ou annulé.', redirect: true });
+                                markFailed({ message: 'Paiement refusé ou annulé.', redirect: true });
                                 return;
                             }
 
@@ -780,7 +772,7 @@
                     button.click();
                 } catch (error) {
                     initialized = false;
-                    markFailed({ message: error?.message || 'Impossible d’ouvrir le widget FedaPay pour le moment.' });
+                    markFailed({ message: error?.message || 'Échec d\'ouverture du widget FedaPay.' });
                 }
             };
 
@@ -801,7 +793,7 @@
             }
 
             if (urlState.get('payment') === 'failed' || status === 'failed' || initialVoteStatus === 'failed') {
-                markFailed({ message: 'Le paiement associé à cette référence a déjà échoué. Vous pouvez relancer la collecte.' });
+                markFailed({ message: 'Paiement déjà échoué pour cette référence.' });
                 return;
             }
 

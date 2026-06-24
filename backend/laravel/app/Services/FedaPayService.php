@@ -5,8 +5,9 @@ namespace App\Services;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class FedaPayService
 {
@@ -48,6 +49,10 @@ class FedaPayService
      * @throws ConnectionException
      * @throws RequestException
      */
+    private const MAX_RETRIES = 3;
+
+    private const RETRY_DELAY_MS = [200, 500, 1500];
+
     public function createTransaction(
         float $amount,
         string $currency,
@@ -77,12 +82,13 @@ class FedaPayService
             $payload['mode'] = $mode;
         }
 
-        $response = $this->request()
+        $response = $this->retryRequest(fn () => $this->request()
             ->asJson()
             ->withToken($this->requireSecretKey())
+            ->withHeader('Idempotency-Key', Str::uuid()->toString())
             ->post('/transactions', $payload)
             ->throw()
-            ->json();
+            ->json());
 
         return $this->normalizeTransactionPayload((array) $response);
     }
@@ -93,27 +99,24 @@ class FedaPayService
      */
     public function retrieveTransaction(int|string $transactionId): ?array
     {
-        $response = $this->request()
+        $response = $this->retryRequest(fn () => $this->request()
             ->withToken($this->requireSecretKey())
-            ->get('/transactions/' . $transactionId)
+            ->get('/transactions/'.$transactionId)
             ->throw()
-            ->json();
+            ->json());
 
         return $this->normalizeTransactionPayload((array) $response);
     }
 
-    /**
-     * @throws ConnectionException
-     * @throws RequestException
-     */
     public function generateTransactionToken(int|string $transactionId): array
     {
-        $response = $this->request()
+        $response = $this->retryRequest(fn () => $this->request()
             ->asJson()
             ->withToken($this->requireSecretKey())
-            ->post('/transactions/' . $transactionId . '/token')
+            ->withHeader('Idempotency-Key', Str::uuid()->toString())
+            ->post('/transactions/'.$transactionId.'/token')
             ->throw()
-            ->json();
+            ->json());
 
         return $this->normalizeTokenPayload((array) $response);
     }
@@ -133,10 +136,10 @@ class FedaPayService
      */
     public function searchTransactionsDebug(array $params = []): array
     {
-        $response = $this->request()
+        $response = $this->retryRequest(fn () => $this->request()
             ->withToken($this->requireSecretKey())
             ->get('/transactions/search', $params)
-            ->throw();
+            ->throw());
 
         $decoded = $response->json();
         $payload = is_array($decoded) ? $decoded : [];
@@ -149,7 +152,7 @@ class FedaPayService
             'top_level_type' => is_array($decoded)
                 ? (array_is_list($decoded) ? 'list' : 'object')
                 : gettype($decoded),
-            'top_level_keys' => is_array($payload) && !array_is_list($payload)
+            'top_level_keys' => is_array($payload) && ! array_is_list($payload)
                 ? array_slice(array_map('strval', array_keys($payload)), 0, 12)
                 : [],
             'raw_list_count' => is_array($rawList) ? count($rawList) : 0,
@@ -163,7 +166,7 @@ class FedaPayService
     {
         $secret = trim((string) $this->webhookSecret());
 
-        if (!$secret || !$signature) {
+        if (! $secret || ! $signature) {
             return false;
         }
 
@@ -174,7 +177,7 @@ class FedaPayService
 
         $parts = [];
         foreach (preg_split('/\s*,\s*/', $normalized) ?: [] as $part) {
-            if (!str_contains($part, '=')) {
+            if (! str_contains($part, '=')) {
                 continue;
             }
 
@@ -182,7 +185,7 @@ class FedaPayService
 
             if ($name !== '' && $value !== '') {
                 $lowerName = strtolower($name);
-                if (!isset($parts[$lowerName])) {
+                if (! isset($parts[$lowerName])) {
                     $parts[$lowerName] = [];
                 }
 
@@ -190,10 +193,10 @@ class FedaPayService
             }
         }
 
-        if (!empty($parts['t'])) {
+        if (! empty($parts['t'])) {
             foreach ($parts['t'] as $timestamp) {
-                $expectedCandidates[] = hash_hmac('sha256', $timestamp . '.' . $payload, $secret);
-                $expectedCandidates[] = hash_hmac('sha256', $timestamp . $payload, $secret);
+                $expectedCandidates[] = hash_hmac('sha256', $timestamp.'.'.$payload, $secret);
+                $expectedCandidates[] = hash_hmac('sha256', $timestamp.$payload, $secret);
             }
         }
 
@@ -242,7 +245,7 @@ class FedaPayService
     {
         $secret = $this->secretKey();
 
-        if (!$secret) {
+        if (! $secret) {
             throw new \RuntimeException('La clé secrète FedaPay n’est pas configurée.');
         }
 
@@ -261,8 +264,32 @@ class FedaPayService
     {
         return Http::baseUrl($this->apiBaseUrl())
             ->acceptJson()
-            ->connectTimeout(5)
-            ->timeout(15);
+            ->connectTimeout(10)
+            ->timeout(30);
+    }
+
+    private function retryRequest(callable $request): mixed
+    {
+        $attempts = 0;
+
+        do {
+            try {
+                return $request();
+            } catch (ConnectionException|RequestException $exception) {
+                $attempts++;
+
+                if ($attempts >= self::MAX_RETRIES) {
+                    throw $exception;
+                }
+
+                if ($exception instanceof RequestException && $exception->response?->status() < 500) {
+                    throw $exception;
+                }
+
+                $delay = self::RETRY_DELAY_MS[$attempts - 1] ?? 1500;
+                usleep($delay * 1000);
+            }
+        } while (true);
     }
 
     private function normalizeTransactionPayload(array $payload): array
@@ -307,7 +334,7 @@ class FedaPayService
         ];
 
         foreach ($candidates as $candidate) {
-            if (!is_array($candidate)) {
+            if (! is_array($candidate)) {
                 continue;
             }
 
@@ -351,7 +378,7 @@ class FedaPayService
 
     private function looksLikeTransactionList(mixed $payload): bool
     {
-        if (!is_array($payload) || !array_is_list($payload) || $payload === []) {
+        if (! is_array($payload) || ! array_is_list($payload) || $payload === []) {
             return false;
         }
 
@@ -366,7 +393,7 @@ class FedaPayService
 
     private function extractTransactionListCandidate(mixed $payload, int $depth = 0): ?array
     {
-        if ($depth > 6 || !is_array($payload)) {
+        if ($depth > 6 || ! is_array($payload)) {
             return null;
         }
 
@@ -375,7 +402,7 @@ class FedaPayService
         }
 
         foreach ($payload as $value) {
-            if (!is_array($value)) {
+            if (! is_array($value)) {
                 continue;
             }
 
@@ -393,7 +420,7 @@ class FedaPayService
         $histogram = [];
 
         foreach ($transactions as $transaction) {
-            if (!is_array($transaction)) {
+            if (! is_array($transaction)) {
                 continue;
             }
 
@@ -411,14 +438,14 @@ class FedaPayService
     {
         $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-        if (!is_string($json) || trim($json) === '') {
+        if (! is_string($json) || trim($json) === '') {
             return '(empty)';
         }
 
         $preview = trim($json);
 
         return strlen($preview) > 240
-            ? substr($preview, 0, 240) . '...'
+            ? substr($preview, 0, 240).'...'
             : $preview;
     }
 }

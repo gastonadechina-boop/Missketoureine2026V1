@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             SettingSeeder::class,
             AdminSeeder::class,
+            FaqSeeder::class,
         ]);
 
         if (app()->environment(['local', 'testing'])) {

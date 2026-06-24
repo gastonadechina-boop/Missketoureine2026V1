@@ -24,7 +24,7 @@ class PaymentPageController extends Controller
             ->where('reference', $reference)
             ->firstOrFail();
 
-        $frontendUrl = rtrim((string) (config('app.frontend_url') ?: config('app.frontend-url') ?: env('FRONTEND_URL', '')), '/');
+        $frontendUrl = rtrim((string) config('app.frontend_url', 'http://localhost:5173'), '/');
         $candidateId = (int) (Arr::get($payment->meta, 'candidate_id') ?: $payment->vote?->candidate_id ?: 0);
         $candidatePublicUid = trim((string) ($payment->vote?->candidate?->public_uid ?? ''));
         $candidateSlug = trim((string) ($payment->vote?->candidate?->slug ?? ''));
@@ -102,10 +102,18 @@ class PaymentPageController extends Controller
     {
         $payment = Payment::with('vote')
             ->where('reference', $reference)
-            ->firstOrFail();
+            ->first();
+
+        if (! $payment) {
+            logger()->info('FedaPay callback for unknown payment', ['reference' => $reference]);
+            $frontendUrl = rtrim((string) config('app.frontend_url', 'http://localhost:5173'), '/');
+
+            return redirect()->away($frontendUrl.'/payment/confirmation?reference='.rawurlencode($reference).'&status=unknown');
+        }
+
         $payment = $this->synchronizeForCallback($payment);
 
-        $frontendUrl = rtrim((string) (config('app.frontend_url') ?: config('app.frontend-url') ?: env('FRONTEND_URL', '')), '/');
+        $frontendUrl = rtrim((string) config('app.frontend_url', 'http://localhost:5173'), '/');
         $candidateId = (int) (Arr::get($payment->meta, 'candidate_id') ?: $payment->vote?->candidate_id ?: 0);
         $candidateIdentifier = trim((string) ($payment->vote?->candidate?->public_uid ?? ''));
         if ($candidateIdentifier === '' && $candidateId > 0) {

@@ -1,17 +1,17 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Configuration\Exceptions;
-use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Http\Exceptions\PostTooLargeException;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use App\Console\Commands\BackupDatabase;
 use App\Console\Commands\ReconcileFedapayPayments;
 use App\Jobs\CalculateResultsJob;
 use App\Jobs\DetectFraudJob;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\PostTooLargeException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,8 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withSchedule(function (Schedule $schedule): void {
-        $schedule->job(new CalculateResultsJob())->hourly();
-        $schedule->job(new DetectFraudJob())->everyFifteenMinutes();
+        $schedule->job(new CalculateResultsJob)->hourly();
+        $schedule->job(new DetectFraudJob)->everyFifteenMinutes();
         $schedule->command(ReconcileFedapayPayments::class, ['--limit' => 50, '--recent-hours' => 2160])
             ->everyMinute()
             ->withoutOverlapping();
@@ -31,6 +31,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('model:prune', ['--model' => 'App\\Models\\ActivityLog'])->daily();
     })
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->append(\App\Http\Middleware\SecurityHeadersMiddleware::class);
+
         $middleware->redirectGuestsTo(static function (Request $request): ?string {
             if ($request->is('api/*')) {
                 return null;
@@ -47,6 +49,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\EnsureRole::class,
             'force_password_change' => \App\Http\Middleware\ForcePasswordChange::class,
         ]);
+
+        $middleware->api(prepend: [
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':150,1',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $exception): bool {
@@ -54,7 +60,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (AuthenticationException $exception, Request $request) {
-            if (!$request->is('api/*')) {
+            if (! $request->is('api/*')) {
                 return null;
             }
 
@@ -64,7 +70,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (PostTooLargeException $exception, Request $request) {
-            if (!$request->is('api/*')) {
+            if (! $request->is('api/*')) {
                 return null;
             }
 
@@ -73,7 +79,7 @@ return Application::configure(basePath: dirname(__DIR__))
             $appLimitLabel = $appLimitMb >= 1024
                 ? ((fmod($appLimitMb / 1024, 1.0) === 0.0
                     ? (string) (int) ($appLimitMb / 1024)
-                    : rtrim(rtrim(number_format($appLimitMb / 1024, 1, '.', ''), '0'), '.')) . ' Go')
+                    : rtrim(rtrim(number_format($appLimitMb / 1024, 1, '.', ''), '0'), '.')).' Go')
                 : "{$appLimitMb} Mo";
 
             return response()->json([
@@ -85,7 +91,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (Throwable $exception, Request $request) {
-            if (!$request->is('api/*')) {
+            if (! $request->is('api/*')) {
                 return null;
             }
 

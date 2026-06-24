@@ -38,6 +38,7 @@ const AdminSettings = () => {
   const [feats,   setFeats]   = useState({ votingOpen: false, galleryPublic: false, resultsPublic: false });
   const [notifs,  setNotifs]  = useState({ emailConfirm: false, smsConfirm: false });
   const [security,setSecurity]= useState({ captcha: false, ipTracking: false, maintenance: false, maintenanceEnd: '' });
+  const [paymentConfig, setPaymentConfig] = useState({ fedapayPublicKey: '', fedapaySecretKey: '', fedapayEnv: 'sandbox', currency: 'XOF' });
   const adminRole = (() => {
     try {
       return JSON.parse(localStorage.getItem('adminUser') || 'null')?.role || 'admin';
@@ -75,6 +76,12 @@ const AdminSettings = () => {
           ipTracking: !!data?.ip_tracking_enabled,
           maintenance: !!data?.maintenance_mode,
           maintenanceEnd: toDateTimeLocalValue(data?.maintenance_end_at || data?.maintenance_end_at_iso),
+        });
+        setPaymentConfig({
+          fedapayPublicKey: data?.fedapay_public_key || '',
+          fedapaySecretKey: data?.fedapay_secret_key || '',
+          fedapayEnv: data?.fedapay_environment || 'sandbox',
+          currency: data?.currency || 'XOF',
         });
       } catch (err) {
         if (err?.isSessionExpired) {
@@ -115,6 +122,7 @@ const AdminSettings = () => {
       sms_confirm: notifs.smsConfirm,
       captcha_enabled: security.captcha,
       ip_tracking_enabled: security.ipTracking,
+      currency: paymentConfig.currency,
     };
 
     if (canManageMaintenance) {
@@ -293,6 +301,55 @@ const AdminSettings = () => {
                 <Toggle checked={security[item.key]} onChange={v => setSecurity(s => ({...s, [item.key]: v}))} danger={item.danger} />
               </div>
             ))} 
+          </div>
+        </motion.div>
+
+        {/* Paiement */}
+        <motion.div className="ag-card asetts-payment-card" initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.3 }}>
+          <div className="ag-card-header">
+            <h3>Configuration paiement</h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="1" y="4" width="22" height="16" rx="2" stroke="var(--ag-gold-1)" strokeWidth="1.8"/><path d="M1 10h22" stroke="var(--ag-gold-1)" strokeWidth="1.8"/></svg>
+          </div>
+          <div className="ag-card-body asetts-payment-body">
+            <p className="asetts-payment-desc">
+              Configurez les clés API et la devise pour le traitement des paiements via FedaPay.
+            </p>
+            <div className="asetts-payment-grid">
+              <div className="ag-form-group">
+                <label className="ag-label">Clé publique FedaPay</label>
+                <input type="text" className="ag-input" value={paymentConfig.fedapayPublicKey} onChange={e => setPaymentConfig(p => ({...p, fedapayPublicKey: e.target.value}))} disabled={loading} placeholder="pk_***" />
+              </div>
+              <div className="ag-form-group">
+                <label className="ag-label">Clé secrète FedaPay</label>
+                <input type="password" className="ag-input" value={paymentConfig.fedapaySecretKey} onChange={e => setPaymentConfig(p => ({...p, fedapaySecretKey: e.target.value}))} disabled={loading} placeholder="sk_***" />
+              </div>
+              <div className="ag-form-group">
+                <label className="ag-label">Environnement</label>
+                <select className="ag-input ag-select" value={paymentConfig.fedapayEnv} onChange={e => setPaymentConfig(p => ({...p, fedapayEnv: e.target.value}))} disabled={loading}>
+                  <option value="sandbox">Sandbox (test)</option>
+                  <option value="live">Production (live)</option>
+                </select>
+              </div>
+              <div className="ag-form-group">
+                <label className="ag-label">Devise</label>
+                <select className="ag-input ag-select" value={paymentConfig.currency} onChange={e => setPaymentConfig(p => ({...p, currency: e.target.value}))} disabled={loading}>
+                  <option value="XOF">XOF (CFA)</option>
+                  <option value="XAF">XAF (CFA)</option>
+                  <option value="EUR">EUR</option>
+                  <option value="USD">USD</option>
+                </select>
+              </div>
+            </div>
+            <div className="asetts-payment-callout">
+              <div>
+                <strong>Environnement actuel</strong>
+                <p>{paymentConfig.fedapayEnv === 'live' ? 'Production' : 'Sandbox (test)'}</p>
+              </div>
+              <div>
+                <strong>Devise</strong>
+                <p>{paymentConfig.currency}</p>
+              </div>
+            </div>
           </div>
         </motion.div>
 

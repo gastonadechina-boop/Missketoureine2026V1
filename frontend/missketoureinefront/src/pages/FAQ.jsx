@@ -1,35 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { faqAPI } from '../services/api';
 import faqHero from '../assets/faq_hero.svg';
 import faqMobil from '../assets/faq_mobil.svg';
 import './FAQ.css';
-
-const faqs = [
-  {
-    category: 'Vote',
-    items: [
-      { q: 'Comment puis-je voter ?', a: "Choisissez votre candidat favori sur la page Candidats puis effectuez le paiement via Mobile Money. Vous n'avez pas besoin de vous inscrire ni de vous connecter pour voter." },
-      { q: 'Combien coûte un vote ?', a: "Le tarif sera communiqué lors du lancement officiel. 1 paiement = 1 vote. Vous pouvez voter plusieurs fois pour le même candidat." },
-      { q: 'Puis-je voter plusieurs fois ?', a: "Oui, vous pouvez voter plusieurs fois dans la limite fixée par les organisateurs. Une limite quotidienne peut s'appliquer pour garantir l'équité du concours." },
-      { q: 'Comment savoir si mon vote a été comptabilisé ?', a: "Vous recevrez une confirmation instantanée par SMS et/ou email après chaque vote réussi. L'historique de vos votes est également disponible dans votre tableau de bord." },
-    ],
-  },
-  {
-    category: 'Paiement',
-    items: [
-      { q: 'Quels moyens de paiement sont acceptés ?', a: "Nous acceptons MTN Mobile Money, Moov Money et Flooz. D'autres méthodes pourront être ajoutées selon les besoins." },
-      { q: 'Mon paiement est sécurisé ?', a: "Oui, tous les paiements sont sécurisés via les API officielles des opérateurs Mobile Money. Aucune donnée bancaire n'est stockée sur notre plateforme." },
-      { q: 'Que faire si mon paiement échoue ?', a: "En cas d'échec, votre vote ne sera pas comptabilisé et vous ne serez pas débité. Vérifiez votre solde Mobile Money et réessayez." },
-    ],
-  },
-  {
-    category: 'Compte',
-    items: [
-      { q: 'Faut-il un compte pour voter ?', a: "Non : le vote est ouvert sans inscription. Il suffit de payer via Mobile Money depuis la page Candidats pour enregistrer votre vote." },
-      { q: 'J\'ai oublié mon mot de passe, que faire ?', a: "Cliquez sur « Mot de passe oublié » sur la page de connexion. Un lien de réinitialisation vous sera envoyé par email ou SMS." },
-    ],
-  },
-];
 
 const FaqItem = ({ faq, isOpen, onToggle }) => (
   <div className={`faq-item ${isOpen ? 'open' : ''}`}>
@@ -64,6 +38,29 @@ const FaqItem = ({ faq, isOpen, onToggle }) => (
 const FAQ = () => {
   const [openKey, setOpenKey] = useState(null);
   const [activeCategory, setActiveCategory] = useState('Tout');
+  const [faqs, setFaqs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const response = await faqAPI.getAll();
+        const data = response?.data || [];
+        const grouped = data.reduce((acc, faq) => {
+          const cat = faq.category || 'General';
+          if (!acc[cat]) acc[cat] = [];
+          acc[cat].push({ q: faq.question, a: faq.answer });
+          return acc;
+        }, {});
+        setFaqs(Object.entries(grouped).map(([category, items]) => ({ category, items })));
+      } catch {
+        setFaqs([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
 
   const categories = ['Tout', ...faqs.map(g => g.category)];
 
@@ -132,6 +129,8 @@ const FAQ = () => {
 
             {/* Liste des FAQs */}
             <div className="faq-main">
+              {loading && <p style={{ textAlign: 'center', color: 'var(--ag-text-3)', padding: '2rem' }}>Chargement des FAQ...</p>}
+              {!loading && filtered.length === 0 && <p style={{ textAlign: 'center', color: 'var(--ag-text-3)', padding: '2rem' }}>Aucune FAQ trouvée pour cette catégorie.</p>}
               {filtered.map((group, gi) => (
                 <motion.div
                   key={group.category}

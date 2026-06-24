@@ -16,6 +16,8 @@ import PaymentConfirmation from '../pages/PaymentConfirmation';
 import Terms from '../pages/Terms';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import ForgotPassword from '../pages/ForgotPassword';
+import ResetPassword from '../pages/ResetPassword';
 import CandidateDashboard from '../pages/CandidateDashboard';
 import UserDashboard from '../pages/UserDashboard';
 import ChangePassword from '../pages/ChangePassword';
@@ -468,6 +470,8 @@ const AppRouter = () => (
         <Route path="/payment/confirmation" element={<PaymentConfirmation />} />
         <Route path="/login"          element={<GuestOnly><Login /></GuestOnly>} />
         <Route path="/register"       element={<GuestOnly><Register /></GuestOnly>} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password"  element={<ResetPassword />} />
         <Route path="*"               element={<NotFound />} />
       </Route>
 
