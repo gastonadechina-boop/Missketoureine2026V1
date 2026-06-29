@@ -92,12 +92,6 @@ const SOCIAL_LINKS = [
     icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 12s0-3.26-.42-4.83a2.68 2.68 0 00-1.89-1.9C18.12 4.85 12 4.85 12 4.85s-6.12 0-7.69.42a2.68 2.68 0 00-1.89 1.9C2 8.74 2 12 2 12s0 3.26.42 4.83a2.68 2.68 0 001.89 1.9c1.57.42 7.69.42 7.69.42s6.12 0 7.69-.42a2.68 2.68 0 001.89-1.9C22 15.26 22 12 22 12z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M10 9.5v5l4.5-2.5L10 9.5z" fill="currentColor"/></svg>,
   },
   {
-    label: 'Chaîne WhatsApp',
-    href: PROJECT_SOCIAL_LINKS.whatsappChannel,
-    display: 'whatsapp.com/channel/0029Vb7AocKIXnlmiZa7GO1y',
-    icon: <WhatsAppIcon width={18} height={18} />,
-  },
-  {
     label: 'WhatsApp',
     href: PROJECT_SOCIAL_LINKS.whatsapp,
     display: 'wa.me/22940687272',
