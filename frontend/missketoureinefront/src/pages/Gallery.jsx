@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useOutletContext } from 'react-router-dom';
 import { galleryAPI } from '../services/api';
@@ -68,7 +69,7 @@ const PhotoCard = ({ photo, onClick }) => {
 const Lightbox = ({ photo, onClose, onPrev, onNext }) => {
   const [failed, setFailed] = useState(false);
 
-  return (
+  return createPortal(
     <motion.div
       className="lightbox-overlay"
       initial={{ opacity: 0 }}
@@ -130,7 +131,8 @@ const Lightbox = ({ photo, onClose, onPrev, onNext }) => {
           </div>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.div>,
+    document.body
   );
 };
 
